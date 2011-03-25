@@ -27,6 +27,10 @@ namespace Marathon
 
         Texture2D marmotteSprite;
 
+        SpriteFont font;
+
+        ContentManager content;
+
         public ClickMe(GamePanel panel, Wiimote wm) : base(panel, wm)
         {
             //Empty
@@ -39,6 +43,9 @@ namespace Marathon
 
             viewTimer = new Timer { Interval = 15 };
             viewTimer.Tick += ViewTimerClock;
+
+            content = new ContentManager(Services, "Content");
+            font = content.Load<SpriteFont>("SpriteFont1");
         }
 
         protected override void Initialize()
@@ -49,7 +56,7 @@ namespace Marathon
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            //marmotteSprite = Content.Load<Texture2D>("marmotte");
+            marmotteSprite = content.Load<Texture2D>("marmotte");
         }
 
         protected override void Draw()
@@ -64,30 +71,31 @@ namespace Marathon
             //m_spriteBatch.Begin();
             //Dessiner la balle
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.NonPremultiplied);
-            //spriteBatch.Draw(marmotteSprite, new Rectangle((int)xf, (int)yf, 100, 100), Color.White);
+            
             spriteBatch.Draw(t, new Rectangle((int)x, (int)y, 10, 10), Color.White);
 
             //Console.WriteLine("x:"+x+" y:"+y);
 
-            ContentManager content = new ContentManager(Services, "Content");
+            
             
 
             if (timer.Enabled)
             {
-                spriteBatch.Draw(t, new Rectangle((int)recPos.X, (int)recPos.Y, (int)RectangleSize, (int)RectangleSize), Color.White);
+                //spriteBatch.Draw(t, new Rectangle((int)recPos.X, (int)recPos.Y, (int)RectangleSize, (int)RectangleSize), Color.White);
+                spriteBatch.Draw(marmotteSprite, new Rectangle((int)recPos.X, (int)recPos.Y, (int)RectangleSize, (int)RectangleSize), Color.White);
             }
             else
             {
                 if (won)
                 {
                     
-                    spriteBatch.DrawString(content.Load<SpriteFont>("SpriteFont1"), "GAME WON!", new Vector2(20, 50), Color.Black);
+                    spriteBatch.DrawString(font, "GAME WON!", new Vector2(20, 50), Color.Black);
                     
                     
                 }
                 else
                 {
-                    spriteBatch.DrawString(content.Load<SpriteFont>("SpriteFont1"), "GAME OVER!", new Vector2(20, 50), Color.Black);
+                    spriteBatch.DrawString(font, "GAME OVER!", new Vector2(20, 50), Color.Black);
                 }
             }
 
