@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using System.Drawing;
 using WiimoteLib;
 
 namespace Marathon
@@ -15,7 +11,7 @@ namespace Marathon
         private readonly MiniGame[] games;
         private readonly Random random = new Random();
 
-        private int current;
+        private int current = -1;
 
         private int currentLed;
 
@@ -32,15 +28,13 @@ namespace Marathon
 
             games = new MiniGame[]
             {
-                //new Labyrinthe(this, wm),
+                new Labyrinthe(this, wm),
                 new ClickMe(this, wm), 
-                //new Run(this, wm), 
-                //new Moves(this, wm)
+                new Run(this, wm), 
+                new Moves(this, wm)
             };
 
             Layout += GameLayout;
-
-            
 
             startTimer = new Timer {Interval = 3000};
             startTimer.Tick += StartGame;
@@ -51,9 +45,7 @@ namespace Marathon
         {
             startTimer.Stop();
 
-            Console.WriteLine("Stop game " + current);
-
-            if(Controls.Contains(games[current]))
+            if(current >= 0 && Controls.Contains(games[current]))
             {
                 Controls.Remove(games[current]);
             }
@@ -62,9 +54,7 @@ namespace Marathon
 
             current = random.Next(games.Length);
 
-            current = 0;
-
-            Console.WriteLine("Start game " + current);
+            current = 2;
 
             Controls.Add(games[current]);
 
@@ -73,8 +63,6 @@ namespace Marathon
 
         public void GameEnded(bool success)
         {
-            Console.WriteLine("Game ended " + success);
-
             if(success)
             {
                 ScoreManager.GetInstance().AddMultiplier(0.1);
@@ -95,12 +83,18 @@ namespace Marathon
 
         void GameLayout(object sender, LayoutEventArgs e)
         {
-            games[current].SetBounds(0, 0, Width, Height);
+            if(current >= 0)
+            {
+                games[current].SetBounds(0, 0, Width, Height);
+            }
         }
 
         public void WiimoteChanged(object sender, WiimoteChangedEventArgs args)
         {
-            games[current].WiimoteChanged(args.WiimoteState);
+            if(current >= 0)
+            {
+                games[current].WiimoteChanged(args.WiimoteState);
+            }
         }
     }
 }

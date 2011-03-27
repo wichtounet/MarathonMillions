@@ -12,8 +12,8 @@ namespace Marathon
         private const float RectangleSize = 25;
 
         private readonly Random rnd = new Random();
-        private Timer timer;
-        private Timer viewTimer;
+        private readonly Timer timer;
+        private readonly Timer viewTimer;
 
         private float x;
         private float y;
@@ -24,38 +24,29 @@ namespace Marathon
         private bool won;
 
         SpriteBatch spriteBatch;
-
         Texture2D marmotteSprite;
-
         SpriteFont font;
-
         ContentManager content;
 
         public ClickMe(GamePanel panel, Wiimote wm) : base(panel, wm)
         {
-            //Empty
             Wm.SetRumble(false);
-
-            //BackColor = Color.Green;
 
             timer = new Timer { Interval = 1000 };
             timer.Tick += TimerClock;
 
             viewTimer = new Timer { Interval = 15 };
             viewTimer.Tick += ViewTimerClock;
-
-            content = new ContentManager(Services, "Content");
-            font = content.Load<SpriteFont>("SpriteFont1");
         }
 
         protected override void Initialize()
         {
+            content = new ContentManager(Services, "Content");
+            font = content.Load<SpriteFont>("SpriteFont1");
             
-
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
             marmotteSprite = content.Load<Texture2D>("marmotte");
         }
 
@@ -63,35 +54,22 @@ namespace Marathon
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            //Texture2D m_textureBalle = Texture2D.FromStream(graphics.GraphicsDevice, new streamre).FromFile(graphics.GraphicsDevice, "balle.dds");
-
-            Texture2D t = new Texture2D(GraphicsDevice, 1, 1);
+            var t = new Texture2D(GraphicsDevice, 1, 1);
             t.SetData(new[] { Color.Red });
 
-            //m_spriteBatch.Begin();
-            //Dessiner la balle
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.NonPremultiplied);
             
             spriteBatch.Draw(t, new Rectangle((int)x, (int)y, 10, 10), Color.White);
 
-            //Console.WriteLine("x:"+x+" y:"+y);
-
-            
-            
-
             if (timer.Enabled)
             {
-                //spriteBatch.Draw(t, new Rectangle((int)recPos.X, (int)recPos.Y, (int)RectangleSize, (int)RectangleSize), Color.White);
                 spriteBatch.Draw(marmotteSprite, new Rectangle((int)recPos.X, (int)recPos.Y, (int)RectangleSize, (int)RectangleSize), Color.White);
             }
             else
             {
                 if (won)
                 {
-                    
                     spriteBatch.DrawString(font, "GAME WON!", new Vector2(20, 50), Color.Black);
-                    
-                    
                 }
                 else
                 {
@@ -100,7 +78,6 @@ namespace Marathon
             }
 
             spriteBatch.Draw(t, new Rectangle((int)x, (int)y, 5, 5), Color.White);
-
 
             spriteBatch.End();
         }
@@ -157,8 +134,6 @@ namespace Marathon
         internal override void WiimoteChanged(WiimoteState ws)
         {
             x = CalibrateX(ws.IRState.Midpoint.X);
-            //Console.WriteLine(Width);
-            //Console.WriteLine(
             y = CalibrateY(ws.IRState.Midpoint.Y);
 
             if (timer.Enabled)

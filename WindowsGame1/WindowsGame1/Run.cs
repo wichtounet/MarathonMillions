@@ -1,6 +1,8 @@
 ﻿using System;
-using System.Drawing;
 using System.Windows.Forms;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using WiimoteLib;
 
 namespace Marathon
@@ -24,6 +26,13 @@ namespace Marathon
         private State state = State.Starting;
         private int startingTime;
 
+        private SpriteBatch spriteBatch;
+        private SpriteFont font;
+        private ContentManager content;
+        private Texture2D humanSprite;
+        private Texture2D ballSprite;
+        private Texture2D simpleTexture;
+
         private enum State
         {
             Starting,
@@ -33,13 +42,24 @@ namespace Marathon
 
         public Run(GamePanel panel, Wiimote wm) : base(panel, wm)
         {
-            //Nothing to to do here
+            timer = new Timer { Interval = 100 };
+            timer.Tick += TimerClock;
         }
 
         protected override void Initialize()
         {
-            timer = new Timer { Interval = 100 };
-            timer.Tick += TimerClock;
+            content = new ContentManager(Services, "Content");
+            font = content.Load<SpriteFont>("SpriteFont1");
+
+            // Create a new SpriteBatch, which can be used to draw textures.
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            humanSprite = content.Load<Texture2D>("human");
+            ballSprite = content.Load<Texture2D>("ball");
+
+            simpleTexture = new Texture2D(GraphicsDevice, 2, 2);
+            simpleTexture.SetData(new[] { Color.Black, Color.Black, Color.Black, Color.Black });
+            //simpleTexture.SetData(new[] { 0xFFFFFF }, 0, simpleTexture.Width * simpleTexture.Height);
         }
 
         public override void Start()
@@ -97,33 +117,49 @@ namespace Marathon
             }
         }
 
-        private static readonly Pen LinePen = new Pen(Color.Black, 2F);
-
         protected override void Draw()
         {
-            /*if (state == State.Starting)
+            GraphicsDevice.Clear(Color.White);
+
+            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.NonPremultiplied);
+            
+            if (state == State.Starting)
             {
-                g.DrawString("" + (3 - startingTime / 10), new Font("Verdana", 20), new SolidBrush(Color.Black), Width / 2, Height / 2);
+                spriteBatch.DrawString(font, "" + (3 - startingTime / 10), new Vector2(Width / 2, Height / 2), Color.Black);
             }
             else if (state == State.Started)
             {
-                g.DrawEllipse(LinePen, xComputer, Height / 4.0f, 25, 25);
-                g.DrawRectangle(LinePen, xPlayer, 3 * Height / 4.0f, 25, 25);
+                spriteBatch.Draw(ballSprite, new Rectangle((int)xComputer, Height / 4, humanSprite.Width, humanSprite.Height), Color.White);
+                spriteBatch.Draw(humanSprite, new Rectangle((int)xPlayer, 3 * Height / 4, humanSprite.Width, humanSprite.Height), Color.White);
 
-                g.DrawLine(LinePen, 0, Height / 2, StopLine, Height / 2);
-                g.DrawLine(LinePen, StopLine, 0, StopLine, Height);
+                DrawLine(simpleTexture, new Vector2(0, Height / 2), new Vector2(StopLine, Height / 2), Color.White);
+                DrawLine(simpleTexture, new Vector2(StopLine, 0), new Vector2(StopLine, Height), Color.White);
             }
             else if (state == State.Finished)
             {
                 if (xComputer >= StopLine)
                 {
-                    g.DrawString("Computer wins", new Font("Verdana", 20), new SolidBrush(Color.Black), Width / 3, Height / 2 - 50);
+                    spriteBatch.DrawString(font, "Computer wins", new Vector2(Width / 3, Height / 2 - 50), Color.Black);
                 }
                 else if (xPlayer >= StopLine)
                 {
-                    g.DrawString("Player wins", new Font("Verdana", 20), new SolidBrush(Color.Black), Width / 3, Height / 2 - 50);
+                    spriteBatch.DrawString(font, "Player wins", new Vector2(Width / 3, Height / 2 - 50), Color.Black);
                 }
-            }*/
+            }
+
+            spriteBatch.End();
+        }
+
+        void DrawLine(Texture2D spr, Vector2 a, Vector2 b, Color col)
+        {
+            Vector2 Origin = new Vector2(0.5f, 0.0f);
+            Vector2 diff = b - a;
+            float angle;
+            Vector2 Scale = new Vector2(1.0f, diff.Length() / spr.Height);
+
+            angle = (float)(Math.Atan2(diff.Y, diff.X)) - MathHelper.PiOver2;
+
+            spriteBatch.Draw(spr, a, null, col, angle, Origin, Scale, SpriteEffects.None, 1.0f);
         }
 
         internal override void WiimoteChanged(WiimoteState ws)
