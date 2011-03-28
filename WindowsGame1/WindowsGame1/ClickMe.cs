@@ -43,9 +43,6 @@ namespace Marathon
 
             viewTimer = new Timer { Interval = 15 };
             viewTimer.Tick += ViewTimerClock;
-
-            content = new ContentManager(Services, "Content");
-            font = content.Load<SpriteFont>("SpriteFont1");
         }
 
         protected override void Initialize()
@@ -55,8 +52,12 @@ namespace Marathon
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+            // Load game content
+            content = new ContentManager(Services, "Content");
+
             marmotteSprite = content.Load<Texture2D>("marmotte");
+
+            font = content.Load<SpriteFont>("SpriteFont1");
         }
 
         protected override void Draw()
