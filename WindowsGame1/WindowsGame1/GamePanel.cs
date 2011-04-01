@@ -31,7 +31,7 @@ namespace Marathon
                 new Labyrinthe(this, wm),
                 new ClickMe(this, wm), 
                 new Run(this, wm), 
-                new Moves(this, wm)
+                new Buttons(this, wm)
             };
 
             Layout += GameLayout;
@@ -54,7 +54,7 @@ namespace Marathon
 
             current = random.Next(games.Length);
 
-            current = 2;
+            current = 1;
 
             Controls.Add(games[current]);
 

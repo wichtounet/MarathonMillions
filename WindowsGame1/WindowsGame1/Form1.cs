@@ -25,8 +25,6 @@ namespace Marathon
             // create a new instance of the Wiimote
             wm = new Wiimote();
 
-            
-
             scorePanel = new ScorePanel();
             gamePanel = new GamePanel(wm);
             questionPanel = new QuestionPanel(gamePanel);

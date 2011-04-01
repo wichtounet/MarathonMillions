@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using WiimoteLib;
+using Color = Microsoft.Xna.Framework.Color;
 
 namespace Marathon
 {
@@ -9,22 +13,16 @@ namespace Marathon
     {
         private readonly Timer timer;
 
-        private int fps;
+        private float distanceRawX;
+        private float distanceRawY;
+        private float distanceRawZ;
 
-        private float lastY;
-        private float lastX;
-        private float lastZ;
-
-        private float distanceX;
-        private float distanceY;
-        private float distanceZ;
-
-        private float distanceX2;
-        private float distanceY2;
-        private float distanceZ2;
-        
         private State state = State.Started;
         private bool ok;
+
+        private SpriteBatch spriteBatch;
+        private SpriteFont font;
+        private ContentManager content;
 
         private enum State
         {
@@ -32,7 +30,7 @@ namespace Marathon
             Finished
         }
 
-        private enum Move
+        private new enum Move
         {
             Up, 
             Down, 
@@ -42,17 +40,26 @@ namespace Marathon
 
         private int current;
 
-        private Move[] moves = new[]
+        private readonly Move[] moves = new[]
         {
             Move.Up,Move.Down, Move.Right, Move.Left, Move.Down, Move.Up
         };
         
         public Moves(GamePanel panel, Wiimote wm) : base(panel, wm)
         {
-            Paint += PaintMove;
-
             timer = new Timer {Interval = 5000};
             timer.Tick += TimerClock;
+        }
+
+        protected override void Initialize()
+        {
+            current = 0;
+
+            content = new ContentManager(Services, "Content");
+            font = content.Load<SpriteFont>("SpriteFont1");
+
+            // Create a new SpriteBatch, which can be used to draw textures.
+            spriteBatch = new SpriteBatch(GraphicsDevice);
         }
 
         public override void Start()
@@ -60,29 +67,19 @@ namespace Marathon
             state = State.Started;
 
             timer.Start();
-        }
 
-        protected override void Initialize()
-        {throw new NotImplementedException();
-        }
+            UpdateView();
 
-        protected override void Draw()
-        {
-            throw new NotImplementedException();
+            distanceRawX = distanceRawY = distanceRawZ = 0;
         }
 
         private void TimerClock(object sender, EventArgs e)
         {
-            Console.WriteLine("distance X " + distanceX);
-            Console.WriteLine("distance Y " + distanceY);
-            Console.WriteLine("distance Z " + distanceZ);
+            Console.WriteLine("distance Raw X " + distanceRawX);
+            Console.WriteLine("distance Raw Y " + distanceRawY);
+            Console.WriteLine("distance Raw Z " + distanceRawZ);
 
-            Console.WriteLine("distance X 2 " + distanceX2);
-            Console.WriteLine("distance Y 2 " + distanceY2);
-            Console.WriteLine("distance Z 2 " + distanceZ2);
-
-            distanceX = distanceY = distanceZ = 0;
-            distanceX2 = distanceY2 = distanceZ2 = 0;
+            distanceRawX = distanceRawY = distanceRawZ = 0;
 
             switch (moves[current])
             {
@@ -109,13 +106,15 @@ namespace Marathon
                 GamePanel.GameEnded(true);
             }
             
-            Refresh();
+            UpdateView();
         }
 
-        private void PaintMove(object sender, PaintEventArgs e)
+        protected override void Draw()
         {
-            var g = e.Graphics;
+            GraphicsDevice.Clear(Color.White);
 
+            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.NonPremultiplied);
+            
             if(state == State.Started)
             {
                 var currentMove = moves[current];
@@ -123,47 +122,34 @@ namespace Marathon
                 switch (currentMove)
                 {
                     case Move.Up:
-                        g.DrawString("UP", new Font("Verdana", 20), new SolidBrush(Color.Black), Width / 3, Height / 2 - 50);
+                        spriteBatch.DrawString(font, "UP", new Vector2(Width / 3, Height / 2 - 50), Color.Black);
                         break;
                     case Move.Down:
-                        g.DrawString("DOWN", new Font("Verdana", 20), new SolidBrush(Color.Black), Width / 3, Height / 2 - 50);
+                        spriteBatch.DrawString(font, "DOWN", new Vector2(Width / 3, Height / 2 - 50), Color.Black);
                         break;
                     case Move.Left:
-                        g.DrawString("LEFT", new Font("Verdana", 20), new SolidBrush(Color.Black), Width / 3, Height / 2 - 50);
+                        spriteBatch.DrawString(font, "LEFT", new Vector2(Width / 3, Height / 2 - 50), Color.Black);
                         break;
                     case Move.Right:
-                        g.DrawString("RIGHT", new Font("Verdana", 20), new SolidBrush(Color.Black), Width / 3, Height / 2 - 50);
+                        spriteBatch.DrawString(font, "RIGHT", new Vector2(Width / 3, Height / 2 - 50), Color.Black);
                         break;
                 }
             } 
             else if(state == State.Finished)
             {
-                if (ok)
-                {
-                    g.DrawString("Game over", new Font("Verdana", 20), new SolidBrush(Color.Black), Width / 3, Height / 2 - 50);
-                }
-                else
-                {
-                    g.DrawString("Player wins", new Font("Verdana", 20), new SolidBrush(Color.Black), Width / 3, Height / 2 - 50);
-                }
+                spriteBatch.DrawString(font, ok ? "Congratulations" : "Game Over", new Vector2(Width / 3, Height/2 - 50), Color.Black);
             }
+
+            spriteBatch.End();
         }
 
         internal override void WiimoteChanged(WiimoteState ws)
         {
-            var state = ws.AccelState;
+            var accel = ws.AccelState;
 
-            distanceX2 += lastX - state.Values.X;
-            distanceY2 += lastY - state.Values.Y;
-            distanceZ2 += lastZ - state.Values.Z;
-
-            distanceX += state.Values.X;
-            distanceY += state.Values.Y;
-            distanceZ += state.Values.Z;
-
-            lastX = state.Values.X;
-            lastY = state.Values.Y;
-            lastZ = state.Values.Z;
+            distanceRawX += (accel.RawValues.X - 127);
+            distanceRawY += (accel.RawValues.Y - 104);
+            distanceRawZ += (accel.RawValues.Z - 129);
         }
     }
 }
