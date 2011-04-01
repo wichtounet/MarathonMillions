@@ -18,9 +18,9 @@ namespace Marathon
             ScoreManager.GetInstance().ScoreChanged += ScoreChanged;
         }
         
-        private void PaintView(object sender, PaintEventArgs e)
+        private static void PaintView(object sender, PaintEventArgs e)
         {
-            e.Graphics.DrawString("Millions : " + ScoreManager.GetInstance().Score + " Bonus = " + ScoreManager.GetInstance().Multiplier, 
+            e.Graphics.DrawString("Millions : " + ScoreManager.GetInstance().Score + "$ Bonus = " + ScoreManager.GetInstance().Multiplier, 
                 new Font("Verdana", 16), new SolidBrush(Color.Black), 5, 5);
         }
 
@@ -28,7 +28,7 @@ namespace Marathon
         {
             if (InvokeRequired)
             {
-                UpdateCallback callback = new UpdateCallback(UpdateView);
+                UpdateCallback callback = UpdateView;
                 BeginInvoke(callback);
             }
             else

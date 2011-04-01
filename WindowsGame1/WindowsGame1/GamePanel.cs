@@ -28,7 +28,7 @@ namespace Marathon
 
             games = new MiniGame[]
             {
-                new Labyrinthe(this, wm),
+                //new Labyrinthe(this, wm),
                 new ClickMe(this, wm), 
                 new Run(this, wm), 
                 new Buttons(this, wm)
@@ -54,7 +54,7 @@ namespace Marathon
 
             current = random.Next(games.Length);
 
-            current = 1;
+            //current = 1;
 
             Controls.Add(games[current]);
 

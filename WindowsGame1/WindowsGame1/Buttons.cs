@@ -77,7 +77,7 @@ namespace Marathon
             {
                 sucess++;
 
-                if(sucess == 10)
+                if(sucess == 5)
                 {
                     ok = true;
 
