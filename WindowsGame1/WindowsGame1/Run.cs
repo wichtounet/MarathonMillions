@@ -12,7 +12,7 @@ namespace Marathon
         private const float ComputerSpeed = 3.0f;
         private const float StopLine = 320.0f;
 
-        private Timer timer;
+        private readonly Timer timer;
 
         private int fps;
 
@@ -57,9 +57,8 @@ namespace Marathon
             humanSprite = content.Load<Texture2D>("human");
             ballSprite = content.Load<Texture2D>("ball");
 
-            simpleTexture = new Texture2D(GraphicsDevice, 2, 2);
-            simpleTexture.SetData(new[] { Color.Black, Color.Black, Color.Black, Color.Black });
-            //simpleTexture.SetData(new[] { 0xFFFFFF }, 0, simpleTexture.Width * simpleTexture.Height);
+            simpleTexture = new Texture2D(GraphicsDevice, 1, 1);
+            simpleTexture.SetData(new[] { Color.Black });
         }
 
         public override void Start()
@@ -132,8 +131,8 @@ namespace Marathon
                 spriteBatch.Draw(ballSprite, new Rectangle((int)xComputer, Height / 4, humanSprite.Width, humanSprite.Height), Color.White);
                 spriteBatch.Draw(humanSprite, new Rectangle((int)xPlayer, 3 * Height / 4, humanSprite.Width, humanSprite.Height), Color.White);
 
-                DrawLine(simpleTexture, new Vector2(0, Height / 2), new Vector2(StopLine, Height / 2), Color.White);
-                DrawLine(simpleTexture, new Vector2(StopLine, 0), new Vector2(StopLine, Height), Color.White);
+                spriteBatch.Draw(simpleTexture, new Rectangle(0, Height / 2, (int) StopLine, 2), Color.White);
+                spriteBatch.Draw(simpleTexture, new Rectangle((int) StopLine, 0, 2, Height), Color.White);
             }
             else if (state == State.Finished)
             {
@@ -148,18 +147,6 @@ namespace Marathon
             }
 
             spriteBatch.End();
-        }
-
-        void DrawLine(Texture2D spr, Vector2 a, Vector2 b, Color col)
-        {
-            Vector2 Origin = new Vector2(0.5f, 0.0f);
-            Vector2 diff = b - a;
-            float angle;
-            Vector2 Scale = new Vector2(1.0f, diff.Length() / spr.Height);
-
-            angle = (float)(Math.Atan2(diff.Y, diff.X)) - MathHelper.PiOver2;
-
-            spriteBatch.Draw(spr, a, null, col, angle, Origin, Scale, SpriteEffects.None, 1.0f);
         }
 
         internal override void WiimoteChanged(WiimoteState ws)
