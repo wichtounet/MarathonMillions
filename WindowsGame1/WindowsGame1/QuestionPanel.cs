@@ -6,11 +6,9 @@ using System.Speech.Recognition;
 
 namespace Marathon
 {
-    class QuestionPanel : Panel
+    public class QuestionPanel : Panel
     {
-        
         private readonly SpeechSynthesizer synthesizer;
-        private readonly SpeechRecognitionEngine recognizer;
 
         private State state = State.Started;
         private int goodAnswer;
@@ -28,7 +26,9 @@ namespace Marathon
             QuestionAsked, 
             WaitConfirmation,
             Wait,
-            Fail
+            Fail,
+            Win,
+            BigGame
         }
 
         private readonly String[][][] questions = new[]
@@ -119,9 +119,9 @@ namespace Marathon
             } 
         };
 
-        private int current = 0;
+        private int current;
         private readonly int[] scores = new[] {800, 1500, 3000, 6000, 12000, 24000, 48000, 72000, 100000, 150000, 300000, 1000000, 2500000, 5000000};
-        private GamePanel gamePanel;
+        private readonly GamePanel gamePanel;
 
         public QuestionPanel(GamePanel gamePanel)
         {
@@ -130,40 +130,9 @@ namespace Marathon
 
             synthesizer = new SpeechSynthesizer();
 
-            // Rajout des choix à la grammaire du prog
-            var grammar = new GrammarBuilder();
-            grammar.Append(new Choices("1", "2", "3", "4", "Yes", "No"));
-
-            recognizer = new SpeechRecognitionEngine();
-            recognizer.SetInputToDefaultAudioDevice();
-            recognizer.UnloadAllGrammars();
-            recognizer.LoadGrammar(new Grammar(grammar));
-            recognizer.SpeechRecognized += SpeechRecognized;
-            //recognizer.SpeechHypothesized += SpeechHypothesized;
-            //recognizer.SpeechDetected += SpeechDetected;
-            //recognizer.SpeechRecognitionRejected += SpeechRecognitionRejected;
-            recognizer.RecognizeAsync(RecognizeMode.Multiple);
-
-            // create the delegate that the Timer will call
             timer = new Timer();
             timer.Tick += TimerClock;
             timer.Interval = 1000;
-        }
-
-        private void SpeechDetected(object sender, SpeechDetectedEventArgs e)
-        {
-            Console.WriteLine("Detected " + e.AudioPosition);
-        }
-
-        private void SpeechRecognitionRejected(object sender, SpeechRecognitionRejectedEventArgs e)
-        {
-            Console.WriteLine("Rejected : " + e.Result.Audio);
-            Console.WriteLine("Rejected : " + e.Result.Text);
-        }
-
-        private void SpeechHypothesized(object sender, SpeechHypothesizedEventArgs e)
-        {
-            Console.WriteLine("Hypothesized : " + e.Result.Text);
         }
 
         public void Start()
@@ -194,7 +163,9 @@ namespace Marathon
 
                         state = State.Fail;
 
-                        //TODO Stop the game and display the millions
+                        gamePanel.TerminateGame();
+                        
+                        timer.Stop();
                     }
 
                     Refresh();
@@ -240,6 +211,20 @@ namespace Marathon
                 return;
             }
 
+            if (state == State.Win)
+            {
+                g.DrawString("Congratulations", new Font("Verdana", 32), new SolidBrush(Color.Black), 5, 5);
+
+                return;
+            }
+
+            if (state == State.BigGame)
+            {
+                g.DrawString("Play the right game", new Font("Verdana", 32), new SolidBrush(Color.Black), 5, 5);
+
+                return;
+            }
+
             if(state == State.Wait)
             {
                 g.DrawString("...", new Font("Verdana", 32), new SolidBrush(Color.Black), 5, 5);
@@ -257,11 +242,8 @@ namespace Marathon
             g.DrawString("" + countDown, new Font("Verdana", 20), new SolidBrush(Color.Red), 100, 250);
         }
 
-        void SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
+        internal void SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
         {
-            //Console.WriteLine("Recognized : " + e.Result.Text);
-            //Console.WriteLine("Status : " + state);
-
             switch (state)
             {
                 case State.QuestionAsked :
@@ -290,18 +272,28 @@ namespace Marathon
 
                             current++;
 
-                            if(current != 0 && current % 5 == 0)
-                            {
-                                //TODO and start big game
-                            }
-
                             if(current == scores.Length)
                             {
-                                //TODO stop game
-                            }
+                                state = State.Win;
 
-                            wait = 5;
-                            state = State.Wait;
+                                gamePanel.TerminateGame();
+
+                                timer.Stop();
+                            } 
+                            else if (current != 0 && current % 2 == 0)
+                            {
+                                state = State.Wait;
+                                timer.Stop();
+
+                                gamePanel.TerminateGame();
+                                gamePanel.StartBigGame(this);
+
+                                state = State.BigGame;
+                            } else
+                            {
+                                wait = 5;
+                                state = State.Wait;
+                            }
                         } else
                         {
                             synthesizer.SpeakAsync("Game over !");
@@ -320,6 +312,16 @@ namespace Marathon
 
                     break;
             }
+        }
+
+        public void Restart()
+        {
+            wait = 5;
+            state = State.Wait;
+
+            timer.Start();
+
+            Refresh();
         }
 
         private void AskQuestion(String title, String answer1, String answer2, String answer3, String answer4, int answer)

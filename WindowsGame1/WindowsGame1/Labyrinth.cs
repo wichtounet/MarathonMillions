@@ -144,6 +144,12 @@ namespace Marathon
             UpdateView();
             timer.Start();
         }
+
+        public override void Stop()
+        {
+            timer.Stop();
+        }
+
         protected override void Draw()
         {
             GraphicsDevice.Clear(Color.White);

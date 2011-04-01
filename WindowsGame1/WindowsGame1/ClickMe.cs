@@ -108,9 +108,14 @@ namespace Marathon
             viewTimer.Start();
         }
 
+        public override void Stop()
+        {
+            timer.Stop();
+            viewTimer.Stop();
+        }
+
         private void TimerClock(object obj, EventArgs ea)
         {
-            Console.WriteLine("TimerClock" + time);
             if (time == 0)
             {
                 won = false;
