@@ -159,16 +159,19 @@ namespace Marathon
             var width = Width / labyrinthSize;
             var height = Height / labyrinthSize;
 
+            string text;
             switch (state)
             {
                 case 0:
                     spriteBatch.Draw(endSprite, new Rectangle((int)x, (int)y, 4, 4), Color.Black);
                     break;
                 case 2:
-                    spriteBatch.DrawString(font, "You loose", new Vector2(Width / 3, Height / 2 - 50), Color.RoyalBlue);
+                    text = "You loose!";
+                    spriteBatch.DrawString(font, text, new Vector2(Width / 2, Height / 2) - (font.MeasureString(text) / 2), Color.RoyalBlue); 
                     break;
                 case 3:
-                    spriteBatch.DrawString(font, "You wins", new Vector2(Width / 3, Height / 2 - 50), Color.RoyalBlue);
+                    text = "You win!";
+                    spriteBatch.DrawString(font, text, new Vector2(Width / 2, Height / 2) - (font.MeasureString(text) / 2), Color.RoyalBlue); 
                     break;
             }
 
@@ -235,19 +238,16 @@ namespace Marathon
 
             if (state == 0 && matrice[currentMatrice,yPos,xPos] == S.Start)
             {
-                Console.WriteLine("GAME START");
                 state = 1;
             }
             else if (state == 1 && matrice[currentMatrice, yPos, xPos] == S.Wall)
             {
-                Console.WriteLine("GAME OVER");
                 state = 2;
                 timer.Stop();
                 GamePanel.GameEnded(false);
             }
             else if (state == 1 && matrice[currentMatrice, yPos, xPos] == S.End)
             {
-                Console.WriteLine("GAME FINISH");
                 state = 3;
                 timer.Stop();
                 GamePanel.GameEnded(true);

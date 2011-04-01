@@ -74,11 +74,13 @@ namespace Marathon
             {
                 if (won)
                 {
-                    spriteBatch.DrawString(font, "GAME WON!", new Vector2(20, 50), Color.Black);
+                    string text = "GAME WON!";
+                    spriteBatch.DrawString(font, text, new Vector2(Width / 2, Height / 2) - (font.MeasureString(text) / 2), Color.Black);
                 }
                 else
                 {
-                    spriteBatch.DrawString(font, "GAME OVER!", new Vector2(20, 50), Color.Black);
+                    string text = "GAME OVER!";
+                    spriteBatch.DrawString(font, text, new Vector2(Width / 2, Height / 2) - (font.MeasureString(text) / 2), Color.Red); 
                 }
             }
 
@@ -148,7 +150,7 @@ namespace Marathon
 
             if (timer.Enabled)
             {
-                if (x >= recPos.X && x <= recPos.X + RectangleSize && y >= recPos.Y && y <= recPos.Y + RectangleSize)
+                if (x >= recPos.X && x <= recPos.X + RectangleSize && y >= recPos.Y && y <= recPos.Y + RectangleSize && ws.ButtonState.B)
                 {
                     win++;
 

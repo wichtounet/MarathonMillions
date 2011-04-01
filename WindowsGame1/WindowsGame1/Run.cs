@@ -9,8 +9,8 @@ namespace Marathon
 {
     class Run : MiniGame
     {
-        private const float ComputerSpeed = 3.0f;
-        private const float StopLine = 320.0f;
+        private float ComputerSpeed = 3.0f;
+        private float StopLine = 320.0f;
 
         private readonly Timer timer;
 
@@ -84,8 +84,11 @@ namespace Marathon
             timer.Stop();
         }
 
-        private void TimerClock(object sender, EventArgs e)
-        {
+        private void TimerClock(object sender, EventArgs e){
+
+            StopLine = Width - 100;
+            ComputerSpeed = StopLine / 100;
+
             if(state == State.Starting)
             {
                 startingTime += 1;
@@ -98,7 +101,7 @@ namespace Marathon
             else
             {
                 xComputer += ComputerSpeed;
-                xPlayer += speed;
+                xPlayer += (speed* StopLine/320);
 
                 if (xComputer >= StopLine)
                 {
@@ -129,7 +132,8 @@ namespace Marathon
             
             if (state == State.Starting)
             {
-                spriteBatch.DrawString(font, "" + (3 - startingTime / 10), new Vector2(Width / 2, Height / 2), Color.Black);
+                string sTime = "" + (3 - startingTime / 10);
+                spriteBatch.DrawString(font, sTime, new Vector2(Width / 2, Height / 2) - (font.MeasureString(sTime) / 2), Color.Black);
             }
             else if (state == State.Started)
             {
@@ -143,11 +147,13 @@ namespace Marathon
             {
                 if (xComputer >= StopLine)
                 {
-                    spriteBatch.DrawString(font, "Computer wins", new Vector2(Width / 3, Height / 2 - 50), Color.Black);
+                    string text = "Computer wins";
+                    spriteBatch.DrawString(font, text, new Vector2(Width / 2, Height / 2) - (font.MeasureString(text) / 2), Color.Red);
                 }
                 else if (xPlayer >= StopLine)
                 {
-                    spriteBatch.DrawString(font, "Player wins", new Vector2(Width / 3, Height / 2 - 50), Color.Black);
+                    string text = "Player wins";
+                    spriteBatch.DrawString(font, text, new Vector2(Width / 2, Height / 2) - (font.MeasureString(text) / 2), Color.Black);
                 }
             }
 
