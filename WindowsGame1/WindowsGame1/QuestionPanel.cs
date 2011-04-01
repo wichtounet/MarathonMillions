@@ -135,14 +135,6 @@ namespace Marathon
             grammar.Append(new Choices("1", "2", "3", "4", "Yes", "No"));
 
             recognizer = new SpeechRecognitionEngine();
-
-            //recognizer.SetInputToDefaultAudioDevice();
-            //recognizer.RecognizeAsync(RecognizeMode.Single);
-            recognizer.SpeechRecognized += SpeechRecognized;
-            recognizer.SpeechHypothesized += SpeechHypothesized;
-            recognizer.SpeechDetected += SpeechDetected;
-            recognizer.SpeechRecognitionRejected += SpeechRecognitionRejected;
-
             recognizer.SetInputToDefaultAudioDevice();
             recognizer.UnloadAllGrammars();
             recognizer.LoadGrammar(new Grammar(grammar));
@@ -157,7 +149,7 @@ namespace Marathon
             timer.Tick += TimerClock;
             timer.Interval = 1000;
         }
-        protected void AudioLevelUpdated(object sender, AudioLevelUpdatedEventArgs e)
+
         private void SpeechDetected(object sender, SpeechDetectedEventArgs e)
         {
             Console.WriteLine("Detected " + e.AudioPosition);

@@ -35,7 +35,7 @@ namespace Marathon
 
         public float CalibrateY(float y)
         {
-            var y2 = ((y - 0.1f) / 70 * 100) * Height;
+            if (Width == 0 || Height == 0)
             {
                 return y;
             }

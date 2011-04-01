@@ -20,8 +20,7 @@ namespace Marathon
         public GamePanel(Wiimote wm)
         {
             this.wm = wm;
-            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
-
+            
             Layout += GameLayout;
 
             new ClickMe(this, wm);
@@ -57,49 +56,6 @@ namespace Marathon
             current = random.Next(games.Length);
 
             current = 1;
-            Controls.Add(games[current]);
-
-            games[current].Start();
-        }
-
-        public void GameEnded(bool success)
-        {
-            if(success)
-            {
-                ScoreManager.GetInstance().AddMultiplier(0.1);
-            } else
-            {
-                ScoreManager.GetInstance().AddMultiplier(-0.05);
-            }
-
-            startTimer.Start();
-        }
-
-        public void PimpLed() 
-        {
-            wm.SetLEDs(currentLed == 0, currentLed == 1, currentLed == 2, currentLed == 3);
-
-            currentLed = (currentLed < 4) ? ++currentLed : 0;
-        }
-
-        void GameLayout(object sender, LayoutEventArgs e)
-        {
-            if(current >= 0)
-            {
-                games[current].SetBounds(0, 0, Width, Height);
-            }
-        }
-
-        public void WiimoteChanged(object sender, WiimoteChangedEventArgs args)
-        {
-            if(current >= 0)
-            {
-                games[current].WiimoteChanged(args.WiimoteState);
-            }
-        }
-    }
-}
-
             Controls.Add(games[current]);
 
             games[current].Start();
