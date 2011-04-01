@@ -130,7 +130,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="GraphicsDeviceService.cs" />
-    <Compile Include="Labyrinthe.cs">
+    <Compile Include="Labyrinth.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="MiniGame.cs">
