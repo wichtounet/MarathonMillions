@@ -9,7 +9,7 @@ namespace Marathon
 {
     public class ClickMe : MiniGame
     {
-        private const float RectangleSize = 25;
+        private int RectangleSize = 25;
 
         private readonly Random rnd = new Random();
         private readonly Timer timer;
@@ -25,6 +25,8 @@ namespace Marathon
 
         SpriteBatch spriteBatch;
         Texture2D marmotteSprite;
+        Texture2D viseurSprite;
+        Texture2D background;
         SpriteFont font;
         ContentManager content;
 
@@ -51,24 +53,27 @@ namespace Marathon
             content = new ContentManager(Services, "Content");
 
             marmotteSprite = content.Load<Texture2D>("marmotte");
+            viseurSprite = content.Load<Texture2D>("viseur");
+            background = content.Load<Texture2D>("green_grass"); 
 
             font = content.Load<SpriteFont>("SpriteFont1");
         }
 
         protected override void Draw()
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Green);
 
             var t = new Texture2D(GraphicsDevice, 1, 1);
             t.SetData(new[] { Color.Red });
 
-            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.NonPremultiplied);
-            
-            spriteBatch.Draw(t, new Rectangle((int)x, (int)y, 10, 10), Color.White);
+            spriteBatch.Begin(); //SpriteSortMode.BackToFront, BlendState.NonPremultiplied
+
+            spriteBatch.Draw(background, new Rectangle(0,0, Width, Height), Color.White);
 
             if (timer.Enabled)
             {
-                spriteBatch.Draw(marmotteSprite, new Rectangle((int)recPos.X, (int)recPos.Y, (int)RectangleSize, (int)RectangleSize), Color.White);
+                RectangleSize = Width / 20;
+                spriteBatch.Draw(marmotteSprite, new Rectangle((int)recPos.X, (int)recPos.Y, RectangleSize, RectangleSize), Color.White);
             }
             else
             {
@@ -84,7 +89,7 @@ namespace Marathon
                 }
             }
 
-            spriteBatch.Draw(t, new Rectangle((int)x, (int)y, 5, 5), Color.White);
+            spriteBatch.Draw(viseurSprite, new Rectangle((int)x - 10, (int)y - 10, 20, 20), Color.White);
 
             spriteBatch.End();
         }
