@@ -73,6 +73,11 @@ namespace Marathon
             distanceRawX = distanceRawY = distanceRawZ = 0;
         }
 
+        public override void Stop()
+        {
+            timer.Stop();
+        }
+
         private void TimerClock(object sender, EventArgs e)
         {
             Console.WriteLine("distance Raw X " + distanceRawX);

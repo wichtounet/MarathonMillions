@@ -70,6 +70,11 @@ namespace Marathon
             UpdateView();
         }
 
+        public override void Stop()
+        {
+            timer.Stop();
+        }
+
         private void TimerClock(object sender, EventArgs e)
         {
             if (a == buttonState.A && b == buttonState.B && one == buttonState.One && two == buttonState.Two

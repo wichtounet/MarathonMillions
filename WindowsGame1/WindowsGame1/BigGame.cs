@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using WiimoteLib;
 using Microsoft.Xna.Framework.Content;
-using System.Speech.Synthesis;
 using System.Speech.Recognition;
 
 namespace Marathon
@@ -25,17 +24,13 @@ namespace Marathon
         private int win;
         private bool won;
 
-        private bool buttonB = false;
-
         SpriteBatch spriteBatch;
         Texture2D marmotteSprite;
         SpriteFont font;
         ContentManager content;
         Texture2D t;
 
-        private readonly SpeechSynthesizer synthesizer;
-        private readonly SpeechRecognizer recognizer;
-
+        private int audioLevel;
 
         public BigGame(GamePanel panel, Wiimote wm)
             : base(panel, wm)
@@ -47,12 +42,11 @@ namespace Marathon
 
             viewTimer = new Timer { Interval = 15 };
             viewTimer.Tick += ViewTimerClock;
+        }
 
-            recognizer = new SpeechRecognizer();
-            recognizer.Enabled = true;
-
-            recognizer.AudioLevelUpdated += AudioLevelUpdated;
-
+        internal override void AudioLevelUpdated(AudioLevelUpdatedEventArgs e)
+        {
+            audioLevel = e.AudioLevel;
         }
 
         protected override void Initialize()
@@ -69,11 +63,6 @@ namespace Marathon
 
             t = new Texture2D(GraphicsDevice, 1, 1);
             t.SetData(new[] { Color.Red });
-        }
-
-        protected void AudioLevelUpdated(object sender, AudioLevelUpdatedEventArgs e)
-        {
-            Console.WriteLine("Audio level : " + recognizer.AudioLevel);
         }
 
         protected override void Draw()
@@ -112,6 +101,8 @@ namespace Marathon
 
         public override void Start()
         {
+            Console.WriteLine("Big game started");
+
             time = 20;
             win = 0;
 
@@ -126,30 +117,33 @@ namespace Marathon
             viewTimer.Start();
         }
 
+        public override void Stop()
+        {
+            timer.Stop();
+            viewTimer.Stop();
+        }
+
         private void TimerClock(object obj, EventArgs ea)
         {
-            Console.WriteLine("TimerClock" + time);
             if (time == 0)
             {
                 won = false;
-                timer.Stop();
-                viewTimer.Stop();
-                Invalidate(true);
-                GamePanel.GameEnded(false);
+                GamePanel.BigGameEnded(false);
+                Stop();
             }
 
             if (won)
             {
-                timer.Stop();
-                viewTimer.Stop();
-                Invalidate(true);
-                GamePanel.GameEnded(true);
+                GamePanel.BigGameEnded(true);
+                Stop();
             }
 
             if (Wm.WiimoteState.Rumble)
             {
                 Wm.SetRumble(false);
             }
+
+            UpdateView();
 
             time--;
         }
@@ -159,10 +153,9 @@ namespace Marathon
             x = CalibrateX(ws.IRState.Midpoint.X);
             y = CalibrateY(ws.IRState.Midpoint.Y);
 
-
             if (timer.Enabled)
             {
-                if (x >= recPos.X && x <= recPos.X + RectangleSize && y >= recPos.Y && y <= recPos.Y + RectangleSize && recognizer.AudioLevel > 60)
+                if (x >= recPos.X && x <= recPos.X + RectangleSize && y >= recPos.Y && y <= recPos.Y + RectangleSize && audioLevel > 60)
                 {
                     win++;
 

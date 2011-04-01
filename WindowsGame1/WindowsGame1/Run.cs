@@ -81,6 +81,11 @@ namespace Marathon
             timer.Start();
         }
 
+        public override void Stop()
+        {
+            timer.Stop();
+        }
+
         private void TimerClock(object sender, EventArgs e){
 
             StopLine = Width - 100;

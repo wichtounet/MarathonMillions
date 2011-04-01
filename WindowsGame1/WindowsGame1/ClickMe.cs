@@ -110,6 +110,12 @@ namespace Marathon
             viewTimer.Start();
         }
 
+        public override void Stop()
+        {
+            timer.Stop();
+            viewTimer.Stop();
+        }
+
         private void TimerClock(object obj, EventArgs ea)
         {
             if (time == 0)
