@@ -49,7 +49,7 @@ namespace Marathon
             viewTimer.Tick += ViewTimerClock;
 
             recognizer = new SpeechRecognizer();
-            recognizer.Enabled = false;
+            recognizer.Enabled = true;
 
             recognizer.AudioLevelUpdated += AudioLevelUpdated;
 
@@ -73,7 +73,7 @@ namespace Marathon
 
         protected void AudioLevelUpdated(object sender, AudioLevelUpdatedEventArgs e)
         {
-            Console.WriteLine(recognizer.AudioLevel);
+            Console.WriteLine("Audio level : " + recognizer.AudioLevel);
         }
 
         protected override void Draw()

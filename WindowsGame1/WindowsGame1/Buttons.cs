@@ -149,14 +149,25 @@ namespace Marathon
             GraphicsDevice.Clear(Color.White);
 
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.NonPremultiplied);
+
+            Color textColor;
+            if (a == buttonState.A && b == buttonState.B && one == buttonState.One && two == buttonState.Two
+                && up == buttonState.Up && down == buttonState.Down && right == buttonState.Right && left == buttonState.Left)
+            {
+                textColor = Color.Blue;
+            }
+            else
+            {
+                textColor = Color.Red;
+            }
             
             switch (state)
             {
                 case State.Started:
-                    spriteBatch.DrawString(font, message, new Vector2(Width / 3, Height / 2 - 50), Color.Black);
+                    spriteBatch.DrawString(font, message, new Vector2(Width / 2, Height / 2) - (font.MeasureString(message) / 2), textColor);
                     break;
                 case State.Finished:
-                    spriteBatch.DrawString(font, ok ? "Congratulations" : "Game Over", new Vector2(Width / 3, Height/2 - 50), Color.Black);
+                    spriteBatch.DrawString(font, ok ? "Congratulations" : "Game Over", new Vector2(Width / 2, Height / 2) - (font.MeasureString(ok ? "Congratulations" : "Game Over") / 2), Color.Black);
                     break;
             }
 
@@ -166,6 +177,8 @@ namespace Marathon
         internal override void WiimoteChanged(WiimoteState ws)
         {
             buttonState = ws.ButtonState;
+
+            UpdateView();
         }
     }
 }
