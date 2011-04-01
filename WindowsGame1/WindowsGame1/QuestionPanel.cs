@@ -280,7 +280,7 @@ namespace Marathon
 
                                 timer.Stop();
                             } 
-                            else if (current != 0 && current % 2 == 0)
+                            else if (current != 0 && current % 5 == 0)
                             {
                                 state = State.Wait;
                                 timer.Stop();
