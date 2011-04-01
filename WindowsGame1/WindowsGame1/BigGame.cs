@@ -4,10 +4,12 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using WiimoteLib;
 using Microsoft.Xna.Framework.Content;
+using System.Speech.Synthesis;
+using System.Speech.Recognition;
 
 namespace Marathon
 {
-    public class ClickMe : MiniGame
+    public class BigGame : MiniGame
     {
         private const float RectangleSize = 25;
 
@@ -23,12 +25,20 @@ namespace Marathon
         private int win;
         private bool won;
 
+        private bool buttonB = false;
+
         SpriteBatch spriteBatch;
         Texture2D marmotteSprite;
         SpriteFont font;
         ContentManager content;
+        Texture2D t;
 
-        public ClickMe(GamePanel panel, Wiimote wm) : base(panel, wm)
+        private readonly SpeechSynthesizer synthesizer;
+        private readonly SpeechRecognizer recognizer;
+
+
+        public BigGame(GamePanel panel, Wiimote wm)
+            : base(panel, wm)
         {
             Wm.SetRumble(false);
 
@@ -37,38 +47,46 @@ namespace Marathon
 
             viewTimer = new Timer { Interval = 15 };
             viewTimer.Tick += ViewTimerClock;
+
+            recognizer = new SpeechRecognizer();
+            recognizer.Enabled = false;
+
+            recognizer.AudioLevelUpdated += AudioLevelUpdated;
+
         }
 
         protected override void Initialize()
         {
             content = new ContentManager(Services, "Content");
             font = content.Load<SpriteFont>("SpriteFont1");
-            
+
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            // Load game content
-            content = new ContentManager(Services, "Content");
 
             marmotteSprite = content.Load<Texture2D>("marmotte");
 
             font = content.Load<SpriteFont>("SpriteFont1");
+
+            t = new Texture2D(GraphicsDevice, 1, 1);
+            t.SetData(new[] { Color.Red });
+        }
+
+        protected void AudioLevelUpdated(object sender, AudioLevelUpdatedEventArgs e)
+        {
+            Console.WriteLine(recognizer.AudioLevel);
         }
 
         protected override void Draw()
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            var t = new Texture2D(GraphicsDevice, 1, 1);
-            t.SetData(new[] { Color.Red });
-
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.NonPremultiplied);
-            
+
             spriteBatch.Draw(t, new Rectangle((int)x, (int)y, 10, 10), Color.White);
 
             if (timer.Enabled)
             {
-                spriteBatch.Draw(marmotteSprite, new Rectangle((int)recPos.X, (int)recPos.Y, (int)RectangleSize, (int)RectangleSize), Color.White);
+                spriteBatch.Draw(marmotteSprite, new Rectangle((int)recPos.X, (int)recPos.Y, (int)Width / 20, (int)Width / 20), Color.White);
             }
             else
             {
@@ -120,7 +138,7 @@ namespace Marathon
                 GamePanel.GameEnded(false);
             }
 
-            if(won)
+            if (won)
             {
                 timer.Stop();
                 viewTimer.Stop();
@@ -141,9 +159,10 @@ namespace Marathon
             x = CalibrateX(ws.IRState.Midpoint.X);
             y = CalibrateY(ws.IRState.Midpoint.Y);
 
+
             if (timer.Enabled)
             {
-                if (x >= recPos.X && x <= recPos.X + RectangleSize && y >= recPos.Y && y <= recPos.Y + RectangleSize)
+                if (x >= recPos.X && x <= recPos.X + RectangleSize && y >= recPos.Y && y <= recPos.Y + RectangleSize && recognizer.AudioLevel > 60)
                 {
                     win++;
 
@@ -157,7 +176,7 @@ namespace Marathon
                     }
 
                     var randx = (float)(rnd.NextDouble() * Width) - RectangleSize;
-                    var randy = (float)(rnd.NextDouble() * Height)- RectangleSize;
+                    var randy = (float)(rnd.NextDouble() * Height) - RectangleSize;
 
                     recPos.X = randx > 0 ? randx : 0;
                     recPos.Y = randy > 0 ? randy : 0;

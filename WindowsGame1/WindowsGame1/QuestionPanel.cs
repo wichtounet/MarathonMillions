@@ -57,15 +57,21 @@ namespace Marathon
             recognizer = new SpeechRecognizer();
             recognizer.LoadGrammar(new Grammar(grammar));
             recognizer.Enabled = true;
+            //recognizer.SetInputToDefaultAudioDevice();
+            //recognizer.RecognizeAsync(RecognizeMode.Single);
             recognizer.SpeechRecognized += SpeechRecognized;
             recognizer.SpeechHypothesized += SpeechHypothesized;
+            recognizer.AudioLevelUpdated += AudioLevelUpdated;
 
             // create the delegate that the Timer will call
             timer = new Timer();
             timer.Tick += TimerClock;
             timer.Interval = 1000;
         }
-
+        protected void AudioLevelUpdated(object sender, AudioLevelUpdatedEventArgs e)
+        {
+            Console.WriteLine(recognizer.AudioLevel);
+        }
         private void SpeechHypothesized(object sender, SpeechHypothesizedEventArgs e)
         {
             Console.WriteLine("Hypothesized : " + e.Result.Text);
