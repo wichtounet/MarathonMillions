@@ -1,0 +1,15 @@
+C:\Users\Vinch\Documents\Visual Studio 2010\Projects\MarathonMillions\WindowsGame1\WindowsGame1\bin\x86\Debug\marmotte.png
+C:\Users\Vinch\Documents\Visual Studio 2010\Projects\MarathonMillions\WindowsGame1\WindowsGame1\bin\x86\Debug\Content\marmotte.xnb
+C:\Users\Vinch\Documents\Visual Studio 2010\Projects\MarathonMillions\WindowsGame1\WindowsGame1\bin\x86\Debug\Content\human.xnb
+C:\Users\Vinch\Documents\Visual Studio 2010\Projects\MarathonMillions\WindowsGame1\WindowsGame1\bin\x86\Debug\Content\ball.xnb
+C:\Users\Vinch\Documents\Visual Studio 2010\Projects\MarathonMillions\WindowsGame1\WindowsGame1\bin\x86\Debug\Content\SpriteFont1.xnb
+C:\Users\Vinch\Documents\Visual Studio 2010\Projects\MarathonMillions\WindowsGame1\WindowsGame1\bin\x86\Debug\Content\marmotte.png
+C:\Users\Vinch\Documents\Visual Studio 2010\Projects\MarathonMillions\WindowsGame1\WindowsGame1\bin\x86\Debug\WindowsGame1.exe
+C:\Users\Vinch\Documents\Visual Studio 2010\Projects\MarathonMillions\WindowsGame1\WindowsGame1\bin\x86\Debug\WindowsGame1.pdb
+C:\Users\Vinch\Documents\Visual Studio 2010\Projects\MarathonMillions\WindowsGame1\WindowsGame1\bin\x86\Debug\WiimoteLib.dll
+C:\Users\Vinch\Documents\Visual Studio 2010\Projects\MarathonMillions\WindowsGame1\WindowsGame1\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Vinch\Documents\Visual Studio 2010\Projects\MarathonMillions\WindowsGame1\WindowsGame1\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+C:\Users\Vinch\Documents\Visual Studio 2010\Projects\MarathonMillions\WindowsGame1\WindowsGame1\obj\x86\Debug\WindowsGame1.exe
+C:\Users\Vinch\Documents\Visual Studio 2010\Projects\MarathonMillions\WindowsGame1\WindowsGame1\obj\x86\Debug\WindowsGame1.pdb
+C:\Users\Vinch\Documents\Visual Studio 2010\Projects\MarathonMillions\WindowsGame1\WindowsGame1\bin\x86\Debug\Content\end.xnb
+C:\Users\Vinch\Documents\Visual Studio 2010\Projects\MarathonMillions\WindowsGame1\WindowsGame1\bin\x86\Debug\Content\wall.xnb
