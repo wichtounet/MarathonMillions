@@ -34,88 +34,50 @@ namespace Marathon
         private readonly String[][][] questions = new[]
         {
             new[]{ //Level 0
-                    new[] {"Qu'est-ce qui tourne autour du soleil ?", "La terre", "La lune", "Un haricot", "Le soleil", "1"},
-                    new[] {"Qui est Thor ? ", "Un dieu viking", "Un schtroumpf", "Un haricot", "Un hobbit", "1"},
-                    new[] {"Qui sont les vikings ? ", "Des grands malades", "Des schtroumpfs", "Des haricots", "Des hobbits", "1"},
-                    new[] {"Que mettre sur les patates ? ", "Mayo, aromat, beurre", "Du ketchup", "Des haricots", "Des frites", "1"}
+                    new[] {"Qu'est-ce qui tourne autour du soleil...", "La terre", "La lune", "Un haricot", "Le soleil", "1"},
+                    new[] {"Qui sont les vikings...", "Des grands malades", "Des schtroumpfs", "Des haricots", "Des hobbits", "1"},
+                    new[] {"Le kiwi est un fruit...", "Moustachu", "Poilu", "Ebouriffé", "frisettes", "2"}
             },
             new[]{ //Level 1
-                    new[] {"Qu'est-ce qui tourne autour du soleil ?", "La terre", "La lune", "Un haricot", "Le soleil", "1"},
-                    new[] {"Qui est Thor ? ", "Un dieu viking", "Un schtroumpf", "Un haricot", "Un hobbit", "1"},
-                    new[] {"Qui sont les vikings ? ", "Des grands malades", "Des schtroumpfs", "Des haricots", "Des hobbits", "1"},
-                    new[] {"Que mettre sur les patates ? ", "Mayo, aromat, beurre", "Du ketchup", "Des haricots", "Des frites", "1"}
+                    new[] {"Laquelle de ces propositions ne désigne pas un Etat d'Afrique ?", "Le Pretoria", "Le Nigeria", "Le Kenya", "Le Liberia", "1"},
+                    new[] {"Qui est Thor ? ", "Un dieu viking", "Un schtroumpf", "Un haricot", "Un hobbit", "1"}
             },
             new[]{ //Level 2
-                    new[] {"Qu'est-ce qui tourne autour du soleil ?", "La terre", "La lune", "Un haricot", "Le soleil", "1"},
-                    new[] {"Qui est Thor ? ", "Un dieu viking", "Un schtroumpf", "Un haricot", "Un hobbit", "1"},
-                    new[] {"Qui sont les vikings ? ", "Des grands malades", "Des schtroumpfs", "Des haricots", "Des hobbits", "1"},
-                    new[] {"Que mettre sur les patates ? ", "Mayo, aromat, beurre", "Du ketchup", "Des haricots", "Des frites", "1"}
+                    new[] {"En athlétisme, dans combien d'épreuves de saut y a-t-il une planche d'appel ?", "1", "2", "3", "4", "2"},
+                    new[] {"En grammaire, lequel de ces verbes est du troisième groupe ?", "Vernir", "Aller", "Penser", "Haïr", "2"}
             },
             new[]{ //Level 3
-                    new[] {"Qu'est-ce qui tourne autour du soleil ?", "La terre", "La lune", "Un haricot", "Le soleil", "1"},
-                    new[] {"Qui est Thor ? ", "Un dieu viking", "Un schtroumpf", "Un haricot", "Un hobbit", "1"},
-                    new[] {"Qui sont les vikings ? ", "Des grands malades", "Des schtroumpfs", "Des haricots", "Des hobbits", "1"},
-                    new[] {"Que mettre sur les patates ? ", "Mayo, aromat, beurre", "Du ketchup", "Des haricots", "Des frites", "1"}
+                    new[] {"Continuez le refrain de ce tube de 1984 : « T'as le look coco...", "Le look t'as coco", "T'as le look coco", "Coco t'as le look", "Coco le look t'as", "3"}
             },
             new[]{ //Level 4
-                    new[] {"Qu'est-ce qui tourne autour du soleil ?", "La terre", "La lune", "Un haricot", "Le soleil", "1"},
-                    new[] {"Qui est Thor ? ", "Un dieu viking", "Un schtroumpf", "Un haricot", "Un hobbit", "1"},
-                    new[] {"Qui sont les vikings ? ", "Des grands malades", "Des schtroumpfs", "Des haricots", "Des hobbits", "1"},
-                    new[] {"Que mettre sur les patates ? ", "Mayo, aromat, beurre", "Du ketchup", "Des haricots", "Des frites", "1"}
+                    new[] {"Où se trouve le Nicaragua ?", "En Europe centrale", "En Amérique latine", "En Afrique centrale", "En Asie mineure", "2"}
             },
             new[]{ //Level 5
-                    new[] {"Qu'est-ce qui tourne autour du soleil ?", "La terre", "La lune", "Un haricot", "Le soleil", "1"},
-                    new[] {"Qui est Thor ? ", "Un dieu viking", "Un schtroumpf", "Un haricot", "Un hobbit", "1"},
-                    new[] {"Qui sont les vikings ? ", "Des grands malades", "Des schtroumpfs", "Des haricots", "Des hobbits", "1"},
-                    new[] {"Que mettre sur les patates ? ", "Mayo, aromat, beurre", "Du ketchup", "Des haricots", "Des frites", "1"}
+                    new[] {"En chimie, on peut manipuler de très puissants acides appelés...", "Extracides", "Hyperacides", "Maxiacides", "Superacides", "4"}
             },
             new[]{ //Level 6
-                    new[] {"Qu'est-ce qui tourne autour du soleil ?", "La terre", "La lune", "Un haricot", "Le soleil", "1"},
-                    new[] {"Qui est Thor ? ", "Un dieu viking", "Un schtroumpf", "Un haricot", "Un hobbit", "1"},
-                    new[] {"Qui sont les vikings ? ", "Des grands malades", "Des schtroumpfs", "Des haricots", "Des hobbits", "1"},
-                    new[] {"Que mettre sur les patates ? ", "Mayo, aromat, beurre", "Du ketchup", "Des haricots", "Des frites", "1"}
+                    new[] {"En 1964, quelle actrice retrouve-t-on aux côtés de Peter Sellers dans « La Panthère Rose » ?", "Jane Fonda", "Ursula Andress", "Claudia Cardinale", "Raquel Welch", "3"}
             },
             new[]{ //Level 7
-                    new[] {"Qu'est-ce qui tourne autour du soleil ?", "La terre", "La lune", "Un haricot", "Le soleil", "1"},
-                    new[] {"Qui est Thor ? ", "Un dieu viking", "Un schtroumpf", "Un haricot", "Un hobbit", "1"},
-                    new[] {"Qui sont les vikings ? ", "Des grands malades", "Des schtroumpfs", "Des haricots", "Des hobbits", "1"},
-                    new[] {"Que mettre sur les patates ? ", "Mayo, aromat, beurre", "Du ketchup", "Des haricots", "Des frites", "1"}
+                    new[] {"En Afrique, vous pouvez rencontrer un oiseau appelé « guêpier...", "Charognard", "Montagnard", "Trouillard", "Campagnard", "2"}
             },
             new[]{ //Level 8
-                    new[] {"Qu'est-ce qui tourne autour du soleil ?", "La terre", "La lune", "Un haricot", "Le soleil", "1"},
-                    new[] {"Qui est Thor ? ", "Un dieu viking", "Un schtroumpf", "Un haricot", "Un hobbit", "1"},
-                    new[] {"Qui sont les vikings ? ", "Des grands malades", "Des schtroumpfs", "Des haricots", "Des hobbits", "1"},
-                    new[] {"Que mettre sur les patates ? ", "Mayo, aromat, beurre", "Du ketchup", "Des haricots", "Des frites", "1"}
+                    new[] {"La région du Manitoba se situe...", "Au Brésil", "Au Mexique", "Au Canada", "En Australie", "3"}
             },
             new[]{ //Level 9
-                    new[] {"Qu'est-ce qui tourne autour du soleil ?", "La terre", "La lune", "Un haricot", "Le soleil", "1"},
-                    new[] {"Qui est Thor ? ", "Un dieu viking", "Un schtroumpf", "Un haricot", "Un hobbit", "1"},
-                    new[] {"Qui sont les vikings ? ", "Des grands malades", "Des schtroumpfs", "Des haricots", "Des hobbits", "1"},
-                    new[] {"Que mettre sur les patates ? ", "Mayo, aromat, beurre", "Du ketchup", "Des haricots", "Des frites", "1"}
+                    new[] {"Dans la bande-dessinée « Titeuf », quel est le vrai nom de « Dumbo » ?", "Noémie", "Elodie", "Magalie", "Valérie", "4"}
             },
             new[]{ //Level 10
-                    new[] {"Qu'est-ce qui tourne autour du soleil ?", "La terre", "La lune", "Un haricot", "Le soleil", "1"},
-                    new[] {"Qui est Thor ? ", "Un dieu viking", "Un schtroumpf", "Un haricot", "Un hobbit", "1"},
-                    new[] {"Qui sont les vikings ? ", "Des grands malades", "Des schtroumpfs", "Des haricots", "Des hobbits", "1"},
-                    new[] {"Que mettre sur les patates ? ", "Mayo, aromat, beurre", "Du ketchup", "Des haricots", "Des frites", "1"}
+                    new[] {"Laquelle de ces personnalités a connu le vingtième siècle ?", "Louise Michel", "Charles Garnier", "Sissi", "Lewis Carroll", "1"}
             },
             new[]{ //Level 11
-                    new[] {"Qu'est-ce qui tourne autour du soleil ?", "La terre", "La lune", "Un haricot", "Le soleil", "1"},
-                    new[] {"Qui est Thor ? ", "Un dieu viking", "Un schtroumpf", "Un haricot", "Un hobbit", "1"},
-                    new[] {"Qui sont les vikings ? ", "Des grands malades", "Des schtroumpfs", "Des haricots", "Des hobbits", "1"},
-                    new[] {"Que mettre sur les patates ? ", "Mayo, aromat, beurre", "Du ketchup", "Des haricots", "Des frites", "1"}
+                    new[] {"Quel morceau de boeuf n'est pas découpé dans la partie arrière de l'animal ?", "La poire", "L'onglet", "L'araignée", "Le jumeau", "4"}
             },
             new[]{ //Level 12
-                    new[] {"Qu'est-ce qui tourne autour du soleil ?", "La terre", "La lune", "Un haricot", "Le soleil", "1"},
-                    new[] {"Qui est Thor ? ", "Un dieu viking", "Un schtroumpf", "Un haricot", "Un hobbit", "1"},
-                    new[] {"Qui sont les vikings ? ", "Des grands malades", "Des schtroumpfs", "Des haricots", "Des hobbits", "1"},
-                    new[] {"Que mettre sur les patates ? ", "Mayo, aromat, beurre", "Du ketchup", "Des haricots", "Des frites", "1"}
+                    new[] {"Sous quel nom connait-t-on mieux Jeanne Bourgeois ?", "Line Renaud", "Mistinguett", "Joséphine Baker", "Régine", "2"}
             },
             new[]{ //Level 13
-                    new[] {"Qu'est-ce qui tourne autour du soleil ?", "La terre", "La lune", "Un haricot", "Le soleil", "1"},
-                    new[] {"Qui est Thor ? ", "Un dieu viking", "Un schtroumpf", "Un haricot", "Un hobbit", "1"},
-                    new[] {"Qui sont les vikings ? ", "Des grands malades", "Des schtroumpfs", "Des haricots", "Des hobbits", "1"},
-                    new[] {"Que mettre sur les patates ? ", "Mayo, aromat, beurre", "Du ketchup", "Des haricots", "Des frites", "1"}
+                    new[] {"Les scientifiques pensent que les dinosaures ont disparu il y a environ...", "6,5 millions d'années", "65 millions d'années", "165 millions d'années", "650 millions d'années", "2"}
             } 
         };
 
