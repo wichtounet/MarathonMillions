@@ -180,10 +180,9 @@ namespace Marathon
 
             if(state == State.Starting)
             {
-                spriteBatch.DrawString(font2, "Move quickly wiimote", new Vector2(10, 10), Color.Black);
-                spriteBatch.DrawString(font2, "up down", new Vector2(10, 50), Color.Black);
+                spriteBatch.DrawString(font2, "Push specified buttons", new Vector2(10, 10), Color.Black);
 
-                string sTime = "" + (3 - startTime / 10);
+                string sTime = "" + startTime;
                 spriteBatch.DrawString(font, sTime, new Vector2(Width / 2, Height / 2) - (font.MeasureString(sTime) / 2), Color.Black);
             } 
             else

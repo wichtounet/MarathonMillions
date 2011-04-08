@@ -21,7 +21,7 @@ namespace Marathon
         private static void PaintView(object sender, PaintEventArgs e)
         {
             e.Graphics.DrawString("Millions : " + ScoreManager.GetInstance().Score + "$ Bonus = " + ScoreManager.GetInstance().Multiplier, 
-                new Font("Verdana", 16), new SolidBrush(Color.Black), 5, 5);
+                new Font("Verdana", 20), new SolidBrush(Color.Black), 5, 5);
         }
 
         private void ScoreChanged(object sender, ScoreChangedArgs args)
