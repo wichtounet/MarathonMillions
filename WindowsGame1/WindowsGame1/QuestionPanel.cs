@@ -262,7 +262,13 @@ namespace Marathon
                         {
                             synthesizer.SpeakAsync("Game over !");
 
+                            gamePanel.DisableRumble();
+
                             state = State.Fail;
+
+                            gamePanel.TerminateGame();
+
+                            timer.Stop();
                         }
 
                         Refresh();

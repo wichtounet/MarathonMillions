@@ -148,6 +148,7 @@ namespace Marathon
             timer.Stop();
             viewTimer.Stop();
             state = State.Lost;
+            Console.WriteLine("Stop()");
         }
 
         private void TimerClock(object obj, EventArgs ea)
