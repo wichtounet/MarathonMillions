@@ -102,11 +102,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="green_grass.jpg">
-      <Name>green_grass</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
     <Compile Include="viseur.png">
       <Name>viseur</Name>
       <Importer>TextureImporter</Importer>
@@ -114,8 +109,22 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="green_grass.jpg">
+      <Name>green_grass</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="SpriteFont2.spritefont">
       <Name>SpriteFont2</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="SmallFont.spritefont">
+      <Name>SmallFont</Name>
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
     </Compile>

@@ -21,14 +21,25 @@ namespace Marathon
 
         private int time;
         private int win;
-        private bool won;
 
-        SpriteBatch spriteBatch;
-        Texture2D marmotteSprite;
-        Texture2D viseurSprite;
-        Texture2D background;
-        SpriteFont font;
-        ContentManager content;
+        private SpriteBatch spriteBatch;
+        private Texture2D marmotteSprite;
+        private Texture2D viseurSprite;
+        private Texture2D background;
+        private SpriteFont font;
+        private SpriteFont font2;
+        private SpriteFont smallFont;
+        private ContentManager content;
+
+        private int startingTime = 3;
+        private State state = State.Starting;
+        private enum State
+        {
+            Starting,
+            Started,
+            Won,
+            Lost
+        }
 
         public ClickMe(GamePanel panel, Wiimote wm) : base(panel, wm)
         {
@@ -43,8 +54,6 @@ namespace Marathon
 
         protected override void Initialize()
         {
-            content = new ContentManager(Services, "Content");
-            font = content.Load<SpriteFont>("SpriteFont1");
             
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -54,9 +63,10 @@ namespace Marathon
 
             marmotteSprite = content.Load<Texture2D>("marmotte");
             viseurSprite = content.Load<Texture2D>("viseur");
-            background = content.Load<Texture2D>("green_grass"); 
-
+            background = content.Load<Texture2D>("green_grass");
             font = content.Load<SpriteFont>("SpriteFont1");
+            font2 = content.Load<SpriteFont>("SpriteFont2");
+            smallFont = content.Load<SpriteFont>("SmallFont");
         }
 
         protected override void Draw()
@@ -70,22 +80,40 @@ namespace Marathon
 
             spriteBatch.Draw(background, new Rectangle(0,0, Width, Height), Color.White);
 
-            if (timer.Enabled)
+            if (state == State.Starting)
             {
-                RectangleSize = Width / 20;
-                spriteBatch.Draw(marmotteSprite, new Rectangle((int)recPos.X, (int)recPos.Y, RectangleSize, RectangleSize), Color.White);
+
+                string sTmp = "" + startingTime;
+                if (startingTime == 0) sTmp = "GO";
+                spriteBatch.DrawString(font, sTmp, new Vector2(Width / 2, Height / 2) - (font.MeasureString(sTmp) / 2), Color.Black);
+
+                sTmp = "Catch 10 marmot by shooting\nthem with the B button";
+                spriteBatch.DrawString(font2, sTmp, new Vector2(Width / 2 - (font2.MeasureString(sTmp) / 2).X, 10), Color.Black);
             }
             else
             {
-                if (won)
+                if (timer.Enabled)
                 {
-                    string text = "GAME WON!";
-                    spriteBatch.DrawString(font, text, new Vector2(Width / 2, Height / 2) - (font.MeasureString(text) / 2), Color.Black);
+                    RectangleSize = Width / 20;
+                    spriteBatch.Draw(marmotteSprite, new Rectangle((int)recPos.X, (int)recPos.Y, RectangleSize, RectangleSize), Color.White);
+                    string tmp = "Remaining time : " + time;
+                    spriteBatch.DrawString(smallFont, tmp, new Vector2(Width - smallFont.MeasureString(tmp).X, 0), Color.Black);
+                    tmp = "Remaining marmot : " + win;
+                    spriteBatch.DrawString(smallFont, tmp, new Vector2(Width - smallFont.MeasureString(tmp).X, smallFont.MeasureString(tmp).Y), Color.Black);
                 }
                 else
                 {
-                    string text = "GAME OVER!";
-                    spriteBatch.DrawString(font, text, new Vector2(Width / 2, Height / 2) - (font.MeasureString(text) / 2), Color.Red); 
+                    if (state == State.Won)
+                    {
+                        string text = "GAME WON!";
+                        spriteBatch.DrawString(font, text, new Vector2(Width / 2, Height / 2) - (font.MeasureString(text) / 2), Color.Black);
+                    }
+                    else
+                    {
+                        string text = "GAME OVER!";
+                        spriteBatch.DrawString(font, text, new Vector2(Width / 2, Height / 2) - (font.MeasureString(text) / 2), Color.Red);
+                        Wm.SetRumble(false);
+                    }
                 }
             }
 
@@ -102,9 +130,10 @@ namespace Marathon
         public override void Start()
         {
             time = 20;
-            win = 0;
+            win = 10;
+            startingTime = 3;
 
-            won = false;
+            state = State.Starting;
 
             x = 0;
             y = 0;
@@ -112,40 +141,53 @@ namespace Marathon
             recPos = new System.Drawing.PointF(50, 50);
 
             timer.Start();
-            viewTimer.Start();
         }
 
         public override void Stop()
         {
             timer.Stop();
             viewTimer.Stop();
+            state = State.Lost;
         }
 
         private void TimerClock(object obj, EventArgs ea)
         {
-            if (time == 0)
+            if (state == State.Starting)
             {
-                won = false;
-                timer.Stop();
-                viewTimer.Stop();
-                Invalidate(true);
-                GamePanel.GameEnded(false);
+                if (startingTime == 0)
+                {
+                    state = State.Started;
+                    viewTimer.Start();
+                }
+                startingTime--;
+                UpdateView();
+            }
+            else
+            {
+                if (time == 0)
+                {
+                    state = State.Lost;
+                    timer.Stop();
+                    viewTimer.Stop();
+                    Invalidate(true);
+                    GamePanel.GameEnded(false);
+                }
+                if (state == State.Won)
+                {
+                    timer.Stop();
+                    viewTimer.Stop();
+                    Invalidate(true);
+                    GamePanel.GameEnded(true);
+                }
+
+                if (Wm.WiimoteState.Rumble)
+                {
+                    Wm.SetRumble(false);
+                }
+
+                time--;
             }
 
-            if(won)
-            {
-                timer.Stop();
-                viewTimer.Stop();
-                Invalidate(true);
-                GamePanel.GameEnded(true);
-            }
-
-            if (Wm.WiimoteState.Rumble)
-            {
-                Wm.SetRumble(false);
-            }
-
-            time--;
         }
 
         internal override void WiimoteChanged(WiimoteState ws)
@@ -157,11 +199,12 @@ namespace Marathon
             {
                 if (x >= recPos.X && x <= recPos.X + RectangleSize && y >= recPos.Y && y <= recPos.Y + RectangleSize && ws.ButtonState.B)
                 {
-                    win++;
+                    win--;
 
-                    if (win == 10)
+                    if (win == 0)
                     {
-                        won = true;
+                        state = State.Won;
+                        Console.WriteLine("WON");
                     }
                     else
                     {

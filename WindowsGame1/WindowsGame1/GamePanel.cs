@@ -58,7 +58,7 @@ namespace Marathon
 
             current = random.Next(games.Length);
 
-            current = 2;
+            current = 1;
             
             Controls.Add(games[current]);
 

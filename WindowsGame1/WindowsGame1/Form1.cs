@@ -22,6 +22,7 @@ namespace Marathon
             AutoScaleMode = AutoScaleMode.Font;
             FormBorderStyle = FormBorderStyle.None;
             WindowState = FormWindowState.Maximized;
+
             Name = "Marathon des millions";
 
             // Rajout des choix à la grammaire du prog

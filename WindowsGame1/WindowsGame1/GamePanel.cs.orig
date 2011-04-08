@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Speech.Recognition;
 using System.Windows.Forms;
 using WiimoteLib;
 
@@ -10,25 +9,22 @@ namespace Marathon
         private readonly Wiimote wm;
 
         private readonly MiniGame[] games;
-        private readonly MiniGame bigGame;
         private readonly Random random = new Random();
 
         private int current = -1;
-        private bool big;
 
         private int currentLed;
 
         private readonly Timer startTimer;
 
-        private QuestionPanel questionsPanel;
-
         public GamePanel(Wiimote wm)
         {
             this.wm = wm;
-            
+            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+
             Layout += GameLayout;
 
-            bigGame = new BigGame(this, wm);
+            new ClickMe(this, wm);
 
             games = new MiniGame[]
             {
@@ -58,12 +54,7 @@ namespace Marathon
 
             current = random.Next(games.Length);
 
-<<<<<<< HEAD
-            current = 0;
-=======
-            current = 3;
->>>>>>> 4ccced3dd8526df973404e194665d1ec265aea48
-            
+
             Controls.Add(games[current]);
 
             games[current].Start();
