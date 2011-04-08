@@ -11,7 +11,7 @@ namespace Marathon
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MarathonForm());
+            Application.Run(new Home());
         }
     }
 }
