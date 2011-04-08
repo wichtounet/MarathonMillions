@@ -1,6 +1,6 @@
 using System;
+using System.Speech.Recognition;
 using WiimoteLib;
-using System;
 
 namespace Marathon
 {
@@ -18,8 +18,14 @@ namespace Marathon
         protected Wiimote Wm { get; private set; }
 
         public abstract void Start();
+        public abstract void Stop();
 
         internal abstract void WiimoteChanged(WiimoteState ws);
+
+        internal virtual void AudioLevelUpdated(AudioLevelUpdatedEventArgs e)
+        {
+            //Nothing by default
+        }
 
         public float CalibrateX(float x)
         {
@@ -35,7 +41,7 @@ namespace Marathon
 
         public float CalibrateY(float y)
         {
-            var y2 = ((y - 0.1f) / 70 * 100) * Height;
+            if (Width == 0 || Height == 0)
             {
                 return y;
             }

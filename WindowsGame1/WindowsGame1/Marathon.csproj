@@ -114,6 +114,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BigGame.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ClickMe.cs">
       <SubType>Component</SubType>
     </Compile>

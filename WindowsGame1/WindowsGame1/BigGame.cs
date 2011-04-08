@@ -4,12 +4,13 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using WiimoteLib;
 using Microsoft.Xna.Framework.Content;
+using System.Speech.Recognition;
 
 namespace Marathon
 {
-    public class ClickMe : MiniGame
+    public class BigGame : MiniGame
     {
-        private int RectangleSize = 25;
+        private const float RectangleSize = 25;
 
         private readonly Random rnd = new Random();
         private readonly Timer timer;
@@ -25,12 +26,14 @@ namespace Marathon
 
         SpriteBatch spriteBatch;
         Texture2D marmotteSprite;
-        Texture2D viseurSprite;
-        Texture2D background;
         SpriteFont font;
         ContentManager content;
+        Texture2D t;
 
-        public ClickMe(GamePanel panel, Wiimote wm) : base(panel, wm)
+        private int audioLevel;
+
+        public BigGame(GamePanel panel, Wiimote wm)
+            : base(panel, wm)
         {
             Wm.SetRumble(false);
 
@@ -41,55 +44,52 @@ namespace Marathon
             viewTimer.Tick += ViewTimerClock;
         }
 
+        internal override void AudioLevelUpdated(AudioLevelUpdatedEventArgs e)
+        {
+            audioLevel = e.AudioLevel;
+        }
+
         protected override void Initialize()
         {
             content = new ContentManager(Services, "Content");
             font = content.Load<SpriteFont>("SpriteFont1");
-            
+
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // Load game content
-            content = new ContentManager(Services, "Content");
-
             marmotteSprite = content.Load<Texture2D>("marmotte");
-            viseurSprite = content.Load<Texture2D>("viseur");
-            background = content.Load<Texture2D>("green_grass"); 
 
             font = content.Load<SpriteFont>("SpriteFont1");
+
+            t = new Texture2D(GraphicsDevice, 1, 1);
+            t.SetData(new[] { Color.Red });
         }
 
         protected override void Draw()
         {
-            GraphicsDevice.Clear(Color.Green);
+            GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            var t = new Texture2D(GraphicsDevice, 1, 1);
-            t.SetData(new[] { Color.Red });
+            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.NonPremultiplied);
 
-            spriteBatch.Begin(); //SpriteSortMode.BackToFront, BlendState.NonPremultiplied
-
-            spriteBatch.Draw(background, new Rectangle(0,0, Width, Height), Color.White);
+            spriteBatch.Draw(t, new Rectangle((int)x, (int)y, 10, 10), Color.White);
 
             if (timer.Enabled)
             {
-                RectangleSize = Width / 20;
-                spriteBatch.Draw(marmotteSprite, new Rectangle((int)recPos.X, (int)recPos.Y, RectangleSize, RectangleSize), Color.White);
+                spriteBatch.Draw(marmotteSprite, new Rectangle((int)recPos.X, (int)recPos.Y, (int)Width / 20, (int)Width / 20), Color.White);
             }
             else
             {
                 if (won)
                 {
-                    string text = "GAME WON!";
-                    spriteBatch.DrawString(font, text, new Vector2(Width / 2, Height / 2) - (font.MeasureString(text) / 2), Color.Black);
+                    spriteBatch.DrawString(font, "GAME WON!", new Vector2(20, 50), Color.Black);
                 }
                 else
                 {
-                    string text = "GAME OVER!";
-                    spriteBatch.DrawString(font, text, new Vector2(Width / 2, Height / 2) - (font.MeasureString(text) / 2), Color.Red); 
+                    spriteBatch.DrawString(font, "GAME OVER!", new Vector2(20, 50), Color.Black);
                 }
             }
 
-            spriteBatch.Draw(viseurSprite, new Rectangle((int)x - 10, (int)y - 10, 20, 20), Color.White);
+            spriteBatch.Draw(t, new Rectangle((int)x, (int)y, 5, 5), Color.White);
 
             spriteBatch.End();
         }
@@ -101,6 +101,8 @@ namespace Marathon
 
         public override void Start()
         {
+            Console.WriteLine("Big game started");
+
             time = 20;
             win = 0;
 
@@ -126,24 +128,22 @@ namespace Marathon
             if (time == 0)
             {
                 won = false;
-                timer.Stop();
-                viewTimer.Stop();
-                Invalidate(true);
-                GamePanel.GameEnded(false);
+                GamePanel.BigGameEnded(false);
+                Stop();
             }
 
-            if(won)
+            if (won)
             {
-                timer.Stop();
-                viewTimer.Stop();
-                Invalidate(true);
-                GamePanel.GameEnded(true);
+                GamePanel.BigGameEnded(true);
+                Stop();
             }
 
             if (Wm.WiimoteState.Rumble)
             {
                 Wm.SetRumble(false);
             }
+
+            UpdateView();
 
             time--;
         }
@@ -155,7 +155,7 @@ namespace Marathon
 
             if (timer.Enabled)
             {
-                if (x >= recPos.X && x <= recPos.X + RectangleSize && y >= recPos.Y && y <= recPos.Y + RectangleSize && ws.ButtonState.B)
+                if (x >= recPos.X && x <= recPos.X + RectangleSize && y >= recPos.Y && y <= recPos.Y + RectangleSize && audioLevel > 60)
                 {
                     win++;
 
@@ -169,7 +169,7 @@ namespace Marathon
                     }
 
                     var randx = (float)(rnd.NextDouble() * Width) - RectangleSize;
-                    var randy = (float)(rnd.NextDouble() * Height)- RectangleSize;
+                    var randy = (float)(rnd.NextDouble() * Height) - RectangleSize;
 
                     recPos.X = randx > 0 ? randx : 0;
                     recPos.Y = randy > 0 ? randy : 0;

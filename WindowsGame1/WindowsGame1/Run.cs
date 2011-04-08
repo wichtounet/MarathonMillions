@@ -9,8 +9,8 @@ namespace Marathon
 {
     class Run : MiniGame
     {
-        private const float ComputerSpeed = 3.0f;
-        private const float StopLine = 320.0f;
+        private float ComputerSpeed = 3.0f;
+        private float StopLine = 320.0f;
 
         private readonly Timer timer;
 
@@ -32,6 +32,7 @@ namespace Marathon
         private Texture2D humanSprite;
         private Texture2D ballSprite;
         private Texture2D simpleTexture;
+        private Texture2D background;
 
         private enum State
         {
@@ -54,8 +55,9 @@ namespace Marathon
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            humanSprite = content.Load<Texture2D>("human");
-            ballSprite = content.Load<Texture2D>("ball");
+            humanSprite = content.Load<Texture2D>("greenCar");
+            ballSprite = content.Load<Texture2D>("redCar");
+            background = content.Load<Texture2D>("road");
 
             simpleTexture = new Texture2D(GraphicsDevice, 1, 1);
             simpleTexture.SetData(new[] { Color.Black });
@@ -79,8 +81,16 @@ namespace Marathon
             timer.Start();
         }
 
-        private void TimerClock(object sender, EventArgs e)
+        public override void Stop()
         {
+            timer.Stop();
+        }
+
+        private void TimerClock(object sender, EventArgs e){
+
+            StopLine = Width - 100;
+            ComputerSpeed = StopLine / 100;
+
             if(state == State.Starting)
             {
                 startingTime += 1;
@@ -93,7 +103,7 @@ namespace Marathon
             else
             {
                 xComputer += ComputerSpeed;
-                xPlayer += speed;
+                xPlayer += (speed* StopLine/320);
 
                 if (xComputer >= StopLine)
                 {
@@ -120,29 +130,34 @@ namespace Marathon
         {
             GraphicsDevice.Clear(Color.White);
 
-            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.NonPremultiplied);
+            spriteBatch.Begin(); //SpriteSortMode.BackToFront, BlendState.NonPremultiplied
+
+            spriteBatch.Draw(background, new Rectangle(0, 0, Width, Height), Color.White);
             
             if (state == State.Starting)
             {
-                spriteBatch.DrawString(font, "" + (3 - startingTime / 10), new Vector2(Width / 2, Height / 2), Color.Black);
+                string sTime = "" + (3 - startingTime / 10);
+                spriteBatch.DrawString(font, sTime, new Vector2(Width / 2, Height / 2) - (font.MeasureString(sTime) / 2), Color.Black);
             }
             else if (state == State.Started)
             {
-                spriteBatch.Draw(ballSprite, new Rectangle((int)xComputer, Height / 4, humanSprite.Width, humanSprite.Height), Color.White);
-                spriteBatch.Draw(humanSprite, new Rectangle((int)xPlayer, 3 * Height / 4, humanSprite.Width, humanSprite.Height), Color.White);
+                spriteBatch.Draw(ballSprite, new Rectangle((int)xComputer, (int)(Height * 0.598) - ballSprite.Height / 2, ballSprite.Width, ballSprite.Height), Color.White);
+                spriteBatch.Draw(humanSprite, new Rectangle((int)xPlayer, (int)(Height * 0.854) - humanSprite.Height / 2, humanSprite.Width, humanSprite.Height), Color.White);
 
-                spriteBatch.Draw(simpleTexture, new Rectangle(0, Height / 2, (int) StopLine, 2), Color.White);
+                //spriteBatch.Draw(simpleTexture, new Rectangle(0, Height / 2, (int) StopLine, 2), Color.White);
                 spriteBatch.Draw(simpleTexture, new Rectangle((int) StopLine, 0, 2, Height), Color.White);
             }
             else if (state == State.Finished)
             {
                 if (xComputer >= StopLine)
                 {
-                    spriteBatch.DrawString(font, "Computer wins", new Vector2(Width / 3, Height / 2 - 50), Color.Black);
+                    string text = "Computer wins";
+                    spriteBatch.DrawString(font, text, new Vector2(Width / 2, Height / 2) - (font.MeasureString(text) / 2), Color.Red);
                 }
                 else if (xPlayer >= StopLine)
                 {
-                    spriteBatch.DrawString(font, "Player wins", new Vector2(Width / 3, Height / 2 - 50), Color.Black);
+                    string text = "Player wins";
+                    spriteBatch.DrawString(font, text, new Vector2(Width / 2, Height / 2) - (font.MeasureString(text) / 2), Color.Black);
                 }
             }
 

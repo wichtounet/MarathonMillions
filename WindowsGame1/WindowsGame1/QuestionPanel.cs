@@ -6,11 +6,9 @@ using System.Speech.Recognition;
 
 namespace Marathon
 {
-    class QuestionPanel : Panel
+    public class QuestionPanel : Panel
     {
-        
         private readonly SpeechSynthesizer synthesizer;
-        private readonly SpeechRecognizer recognizer;
 
         private State state = State.Started;
         private int goodAnswer;
@@ -28,20 +26,102 @@ namespace Marathon
             QuestionAsked, 
             WaitConfirmation,
             Wait,
-            Fail
+            Fail,
+            Win,
+            BigGame
         }
 
-        private readonly String[][] questions = new[]
+        private readonly String[][][] questions = new[]
         {
-            new[] {"Qu'est-ce qui tourne autour du soleil ?", "La terre", "La lune", "Un haricot", "Le soleil", "4"},
-            new[] {"Qui est Thor ? ", "Un dieu viking", "Un schtroumpf", "Un haricot", "Un hobbit", "1"},
-            new[] {"Qui sont les vikings ? ", "Des grands malades", "Des schtroumpfs", "Des haricots", "Des hobbits", "1"},
-            new[] {"Que mettre sur les patates ? ", "Mayo, aromat, beurre", "Du ketchup", "Des haricots", "Des frites", "1"}
+            new[]{ //Level 0
+                    new[] {"Qu'est-ce qui tourne autour du soleil ?", "La terre", "La lune", "Un haricot", "Le soleil", "1"},
+                    new[] {"Qui est Thor ? ", "Un dieu viking", "Un schtroumpf", "Un haricot", "Un hobbit", "1"},
+                    new[] {"Qui sont les vikings ? ", "Des grands malades", "Des schtroumpfs", "Des haricots", "Des hobbits", "1"},
+                    new[] {"Que mettre sur les patates ? ", "Mayo, aromat, beurre", "Du ketchup", "Des haricots", "Des frites", "1"}
+            },
+            new[]{ //Level 1
+                    new[] {"Qu'est-ce qui tourne autour du soleil ?", "La terre", "La lune", "Un haricot", "Le soleil", "1"},
+                    new[] {"Qui est Thor ? ", "Un dieu viking", "Un schtroumpf", "Un haricot", "Un hobbit", "1"},
+                    new[] {"Qui sont les vikings ? ", "Des grands malades", "Des schtroumpfs", "Des haricots", "Des hobbits", "1"},
+                    new[] {"Que mettre sur les patates ? ", "Mayo, aromat, beurre", "Du ketchup", "Des haricots", "Des frites", "1"}
+            },
+            new[]{ //Level 2
+                    new[] {"Qu'est-ce qui tourne autour du soleil ?", "La terre", "La lune", "Un haricot", "Le soleil", "1"},
+                    new[] {"Qui est Thor ? ", "Un dieu viking", "Un schtroumpf", "Un haricot", "Un hobbit", "1"},
+                    new[] {"Qui sont les vikings ? ", "Des grands malades", "Des schtroumpfs", "Des haricots", "Des hobbits", "1"},
+                    new[] {"Que mettre sur les patates ? ", "Mayo, aromat, beurre", "Du ketchup", "Des haricots", "Des frites", "1"}
+            },
+            new[]{ //Level 3
+                    new[] {"Qu'est-ce qui tourne autour du soleil ?", "La terre", "La lune", "Un haricot", "Le soleil", "1"},
+                    new[] {"Qui est Thor ? ", "Un dieu viking", "Un schtroumpf", "Un haricot", "Un hobbit", "1"},
+                    new[] {"Qui sont les vikings ? ", "Des grands malades", "Des schtroumpfs", "Des haricots", "Des hobbits", "1"},
+                    new[] {"Que mettre sur les patates ? ", "Mayo, aromat, beurre", "Du ketchup", "Des haricots", "Des frites", "1"}
+            },
+            new[]{ //Level 4
+                    new[] {"Qu'est-ce qui tourne autour du soleil ?", "La terre", "La lune", "Un haricot", "Le soleil", "1"},
+                    new[] {"Qui est Thor ? ", "Un dieu viking", "Un schtroumpf", "Un haricot", "Un hobbit", "1"},
+                    new[] {"Qui sont les vikings ? ", "Des grands malades", "Des schtroumpfs", "Des haricots", "Des hobbits", "1"},
+                    new[] {"Que mettre sur les patates ? ", "Mayo, aromat, beurre", "Du ketchup", "Des haricots", "Des frites", "1"}
+            },
+            new[]{ //Level 5
+                    new[] {"Qu'est-ce qui tourne autour du soleil ?", "La terre", "La lune", "Un haricot", "Le soleil", "1"},
+                    new[] {"Qui est Thor ? ", "Un dieu viking", "Un schtroumpf", "Un haricot", "Un hobbit", "1"},
+                    new[] {"Qui sont les vikings ? ", "Des grands malades", "Des schtroumpfs", "Des haricots", "Des hobbits", "1"},
+                    new[] {"Que mettre sur les patates ? ", "Mayo, aromat, beurre", "Du ketchup", "Des haricots", "Des frites", "1"}
+            },
+            new[]{ //Level 6
+                    new[] {"Qu'est-ce qui tourne autour du soleil ?", "La terre", "La lune", "Un haricot", "Le soleil", "1"},
+                    new[] {"Qui est Thor ? ", "Un dieu viking", "Un schtroumpf", "Un haricot", "Un hobbit", "1"},
+                    new[] {"Qui sont les vikings ? ", "Des grands malades", "Des schtroumpfs", "Des haricots", "Des hobbits", "1"},
+                    new[] {"Que mettre sur les patates ? ", "Mayo, aromat, beurre", "Du ketchup", "Des haricots", "Des frites", "1"}
+            },
+            new[]{ //Level 7
+                    new[] {"Qu'est-ce qui tourne autour du soleil ?", "La terre", "La lune", "Un haricot", "Le soleil", "1"},
+                    new[] {"Qui est Thor ? ", "Un dieu viking", "Un schtroumpf", "Un haricot", "Un hobbit", "1"},
+                    new[] {"Qui sont les vikings ? ", "Des grands malades", "Des schtroumpfs", "Des haricots", "Des hobbits", "1"},
+                    new[] {"Que mettre sur les patates ? ", "Mayo, aromat, beurre", "Du ketchup", "Des haricots", "Des frites", "1"}
+            },
+            new[]{ //Level 8
+                    new[] {"Qu'est-ce qui tourne autour du soleil ?", "La terre", "La lune", "Un haricot", "Le soleil", "1"},
+                    new[] {"Qui est Thor ? ", "Un dieu viking", "Un schtroumpf", "Un haricot", "Un hobbit", "1"},
+                    new[] {"Qui sont les vikings ? ", "Des grands malades", "Des schtroumpfs", "Des haricots", "Des hobbits", "1"},
+                    new[] {"Que mettre sur les patates ? ", "Mayo, aromat, beurre", "Du ketchup", "Des haricots", "Des frites", "1"}
+            },
+            new[]{ //Level 9
+                    new[] {"Qu'est-ce qui tourne autour du soleil ?", "La terre", "La lune", "Un haricot", "Le soleil", "1"},
+                    new[] {"Qui est Thor ? ", "Un dieu viking", "Un schtroumpf", "Un haricot", "Un hobbit", "1"},
+                    new[] {"Qui sont les vikings ? ", "Des grands malades", "Des schtroumpfs", "Des haricots", "Des hobbits", "1"},
+                    new[] {"Que mettre sur les patates ? ", "Mayo, aromat, beurre", "Du ketchup", "Des haricots", "Des frites", "1"}
+            },
+            new[]{ //Level 10
+                    new[] {"Qu'est-ce qui tourne autour du soleil ?", "La terre", "La lune", "Un haricot", "Le soleil", "1"},
+                    new[] {"Qui est Thor ? ", "Un dieu viking", "Un schtroumpf", "Un haricot", "Un hobbit", "1"},
+                    new[] {"Qui sont les vikings ? ", "Des grands malades", "Des schtroumpfs", "Des haricots", "Des hobbits", "1"},
+                    new[] {"Que mettre sur les patates ? ", "Mayo, aromat, beurre", "Du ketchup", "Des haricots", "Des frites", "1"}
+            },
+            new[]{ //Level 11
+                    new[] {"Qu'est-ce qui tourne autour du soleil ?", "La terre", "La lune", "Un haricot", "Le soleil", "1"},
+                    new[] {"Qui est Thor ? ", "Un dieu viking", "Un schtroumpf", "Un haricot", "Un hobbit", "1"},
+                    new[] {"Qui sont les vikings ? ", "Des grands malades", "Des schtroumpfs", "Des haricots", "Des hobbits", "1"},
+                    new[] {"Que mettre sur les patates ? ", "Mayo, aromat, beurre", "Du ketchup", "Des haricots", "Des frites", "1"}
+            },
+            new[]{ //Level 12
+                    new[] {"Qu'est-ce qui tourne autour du soleil ?", "La terre", "La lune", "Un haricot", "Le soleil", "1"},
+                    new[] {"Qui est Thor ? ", "Un dieu viking", "Un schtroumpf", "Un haricot", "Un hobbit", "1"},
+                    new[] {"Qui sont les vikings ? ", "Des grands malades", "Des schtroumpfs", "Des haricots", "Des hobbits", "1"},
+                    new[] {"Que mettre sur les patates ? ", "Mayo, aromat, beurre", "Du ketchup", "Des haricots", "Des frites", "1"}
+            },
+            new[]{ //Level 13
+                    new[] {"Qu'est-ce qui tourne autour du soleil ?", "La terre", "La lune", "Un haricot", "Le soleil", "1"},
+                    new[] {"Qui est Thor ? ", "Un dieu viking", "Un schtroumpf", "Un haricot", "Un hobbit", "1"},
+                    new[] {"Qui sont les vikings ? ", "Des grands malades", "Des schtroumpfs", "Des haricots", "Des hobbits", "1"},
+                    new[] {"Que mettre sur les patates ? ", "Mayo, aromat, beurre", "Du ketchup", "Des haricots", "Des frites", "1"}
+            } 
         };
 
-        private int current = 0;
-        private readonly int[] scores = new[] {800, 1500, 3000, 6000, 12000, 24000, 48000, 72000, 100000, 150000, 300000, 1000000};
-        private GamePanel gamePanel;
+        private int current;
+        private readonly int[] scores = new[] {800, 1500, 3000, 6000, 12000, 24000, 48000, 72000, 100000, 150000, 300000, 1000000, 2500000, 5000000};
+        private readonly GamePanel gamePanel;
 
         public QuestionPanel(GamePanel gamePanel)
         {
@@ -50,25 +130,9 @@ namespace Marathon
 
             synthesizer = new SpeechSynthesizer();
 
-            // Rajout des choix à la grammaire du prog
-            var grammar = new GrammarBuilder();
-            grammar.Append(new Choices("1", "2", "3", "4", "Yes", "No"));
-
-            recognizer = new SpeechRecognizer();
-            recognizer.LoadGrammar(new Grammar(grammar));
-            recognizer.Enabled = true;
-            recognizer.SpeechRecognized += SpeechRecognized;
-            recognizer.SpeechHypothesized += SpeechHypothesized;
-
-            // create the delegate that the Timer will call
             timer = new Timer();
             timer.Tick += TimerClock;
             timer.Interval = 1000;
-        }
-
-        private void SpeechHypothesized(object sender, SpeechHypothesizedEventArgs e)
-        {
-            Console.WriteLine("Hypothesized : " + e.Result.Text);
         }
 
         public void Start()
@@ -81,9 +145,7 @@ namespace Marathon
             switch (state)
             {
                 case State.Started:
-                    var random = new Random().Next(0, questions.Length - 1);
-
-                    AskQuestion(questions[random][0], questions[random][1], questions[random][2], questions[random][3], questions[random][4], Convert.ToInt16(questions[random][5]));
+                    AskRandom();
 
                     break;
                 case State.QuestionAsked:
@@ -100,6 +162,10 @@ namespace Marathon
                         synthesizer.SpeakAsync("Game over !");
 
                         state = State.Fail;
+
+                        gamePanel.TerminateGame();
+                        
+                        timer.Stop();
                     }
 
                     Refresh();
@@ -112,13 +178,19 @@ namespace Marathon
 
                     if(wait == 0)
                     {
-                        var r = new Random().Next(questions.Length - 1);
-
-                        AskQuestion(questions[r][0], questions[r][1], questions[r][2], questions[r][3], questions[r][4], 1);
+                        AskRandom();
                     }
 
                     break;
             }
+        }
+
+        private void AskRandom()
+        {
+            var r = new Random().Next(0, questions[current].Length - 1);
+
+            AskQuestion(questions[current][r][0], questions[current][r][1], questions[current][r][2], questions[current][r][3], questions[current][r][4],
+                        Convert.ToInt16(questions[current][r][5]));
         }
 
         private void PaintView(object sender, PaintEventArgs e)
@@ -127,8 +199,29 @@ namespace Marathon
 
             g.Clear(Color.White);
 
-            if (state == State.Started || state == State.Fail)
+            if (state == State.Started)
             {
+                return;
+            }
+
+            if (state == State.Fail)
+            {
+                g.DrawString("Game over", new Font("Verdana", 32), new SolidBrush(Color.Black), 5, 5);
+
+                return;
+            }
+
+            if (state == State.Win)
+            {
+                g.DrawString("Congratulations", new Font("Verdana", 32), new SolidBrush(Color.Black), 5, 5);
+
+                return;
+            }
+
+            if (state == State.BigGame)
+            {
+                g.DrawString("Play the right game", new Font("Verdana", 32), new SolidBrush(Color.Black), 5, 5);
+
                 return;
             }
 
@@ -149,11 +242,8 @@ namespace Marathon
             g.DrawString("" + countDown, new Font("Verdana", 20), new SolidBrush(Color.Red), 100, 250);
         }
 
-        void SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
+        internal void SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
         {
-            Console.WriteLine(e.Result.Text);
-            Console.WriteLine("Status : " + state);
-
             switch (state)
             {
                 case State.QuestionAsked :
@@ -182,8 +272,28 @@ namespace Marathon
 
                             current++;
 
-                            wait = 5;
-                            state = State.Wait;
+                            if(current == scores.Length)
+                            {
+                                state = State.Win;
+
+                                gamePanel.TerminateGame();
+
+                                timer.Stop();
+                            } 
+                            else if (current != 0 && current % 5 == 0)
+                            {
+                                state = State.Wait;
+                                timer.Stop();
+
+                                gamePanel.TerminateGame();
+                                gamePanel.StartBigGame(this);
+
+                                state = State.BigGame;
+                            } else
+                            {
+                                wait = 5;
+                                state = State.Wait;
+                            }
                         } else
                         {
                             synthesizer.SpeakAsync("Game over !");
@@ -204,6 +314,16 @@ namespace Marathon
             }
         }
 
+        public void Restart()
+        {
+            wait = 5;
+            state = State.Wait;
+
+            timer.Start();
+
+            Refresh();
+        }
+
         private void AskQuestion(String title, String answer1, String answer2, String answer3, String answer4, int answer)
         {
             this.title = title;
@@ -215,7 +335,7 @@ namespace Marathon
             userAnswer = -1;
             goodAnswer = answer;
             state = State.QuestionAsked;
-            countDown = 30;
+            countDown = 25;
 
             Refresh();
 
