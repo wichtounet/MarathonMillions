@@ -35,12 +35,7 @@ namespace Marathon
                 new Labyrinth(this, wm),
                 new ClickMe(this, wm), 
                 new Run(this, wm), 
-<<<<<<< HEAD
                 new Buttons(this, wm)
-=======
-                new Buttons(this, wm),
-                new BigGame(this, wm)
->>>>>>> aef9853eed893191e6e91957931321eefc785b16
             };
 
             Layout += GameLayout;
@@ -64,10 +59,11 @@ namespace Marathon
             current = random.Next(games.Length);
 
 <<<<<<< HEAD
+            current = 0;
 =======
-            current = 4;
+            current = 3;
+>>>>>>> 4ccced3dd8526df973404e194665d1ec265aea48
             
->>>>>>> aef9853eed893191e6e91957931321eefc785b16
             Controls.Add(games[current]);
 
             games[current].Start();
@@ -173,6 +169,11 @@ namespace Marathon
             {
                 bigGame.AudioLevelUpdated(e);
             }
+        }
+
+        public void DisableRumble()
+        {
+            wm.SetRumble(false);
         }
     }
 }
