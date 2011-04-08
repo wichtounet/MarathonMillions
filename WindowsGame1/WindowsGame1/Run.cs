@@ -28,6 +28,7 @@ namespace Marathon
 
         private SpriteBatch spriteBatch;
         private SpriteFont font;
+        private SpriteFont font2;
         private ContentManager content;
         private Texture2D humanSprite;
         private Texture2D ballSprite;
@@ -51,6 +52,7 @@ namespace Marathon
         {
             content = new ContentManager(Services, "Content");
             font = content.Load<SpriteFont>("SpriteFont1");
+            font2 = content.Load<SpriteFont>("SpriteFont2");
 
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -130,12 +132,15 @@ namespace Marathon
         {
             GraphicsDevice.Clear(Color.White);
 
-            spriteBatch.Begin(); //SpriteSortMode.BackToFront, BlendState.NonPremultiplied
+            spriteBatch.Begin();
 
             spriteBatch.Draw(background, new Rectangle(0, 0, Width, Height), Color.White);
             
             if (state == State.Starting)
             {
+                spriteBatch.DrawString(font2, "Move quickly wiimote", new Vector2(10, 10), Color.Black);
+                spriteBatch.DrawString(font2, "up down", new Vector2(10, 50), Color.Black);
+
                 string sTime = "" + (3 - startingTime / 10);
                 spriteBatch.DrawString(font, sTime, new Vector2(Width / 2, Height / 2) - (font.MeasureString(sTime) / 2), Color.Black);
             }
