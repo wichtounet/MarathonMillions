@@ -96,9 +96,9 @@ namespace Marathon
                 {
                     RectangleSize = Width / 20;
                     spriteBatch.Draw(marmotteSprite, new Rectangle((int)recPos.X, (int)recPos.Y, RectangleSize, RectangleSize), Color.White);
-                    string tmp = "Remaining time : " + time;
+                    string tmp = "Remaining time: " + time;
                     spriteBatch.DrawString(smallFont, tmp, new Vector2(Width - smallFont.MeasureString(tmp).X, 0), Color.Black);
-                    tmp = "Remaining marmot : " + win;
+                    tmp = "Remaining marmot: " + win;
                     spriteBatch.DrawString(smallFont, tmp, new Vector2(Width - smallFont.MeasureString(tmp).X, smallFont.MeasureString(tmp).Y), Color.Black);
                 }
                 else
