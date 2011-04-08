@@ -80,22 +80,32 @@ namespace Marathon
 
             spriteBatch.Draw(background, new Rectangle(0,0, Width, Height), Color.White);
 
-            if (timer.Enabled)
+            if (state == State.Starting)
             {
-                RectangleSize = Width / 20;
-                spriteBatch.Draw(marmotteSprite, new Rectangle((int)recPos.X, (int)recPos.Y, RectangleSize, RectangleSize), Color.White);
+                string sTime = "" + startingTime;
+                spriteBatch.DrawString(font, sTime, new Vector2(Width / 2, Height / 2) - (font.MeasureString(sTime) / 2), Color.Black);
             }
             else
             {
-                if (state == State.Won)
+                if (timer.Enabled)
                 {
-                    string text = "GAME WON!";
-                    spriteBatch.DrawString(font, text, new Vector2(Width / 2, Height / 2) - (font.MeasureString(text) / 2), Color.Black);
+                    RectangleSize = Width / 20;
+                    spriteBatch.Draw(marmotteSprite, new Rectangle((int)recPos.X, (int)recPos.Y, RectangleSize, RectangleSize), Color.White);
+                    string sTime = "" + time;
+                    spriteBatch.DrawString(font, sTime, new Vector2(Width - font.MeasureString(sTime).X, font.MeasureString(sTime).Y), Color.Black);
                 }
                 else
                 {
-                    string text = "GAME OVER!";
-                    spriteBatch.DrawString(font, text, new Vector2(Width / 2, Height / 2) - (font.MeasureString(text) / 2), Color.Red); 
+                    if (state == State.Won)
+                    {
+                        string text = "GAME WON!";
+                        spriteBatch.DrawString(font, text, new Vector2(Width / 2, Height / 2) - (font.MeasureString(text) / 2), Color.Black);
+                    }
+                    else
+                    {
+                        string text = "GAME OVER!";
+                        spriteBatch.DrawString(font, text, new Vector2(Width / 2, Height / 2) - (font.MeasureString(text) / 2), Color.Red);
+                    }
                 }
             }
 
@@ -130,15 +140,15 @@ namespace Marathon
 
         private void TimerClock(object obj, EventArgs ea)
         {
-            viewTimer.Start();
-
             if (state == State.Starting)
             {
                 if (startingTime == 0)
                 {
                     state = State.Started;
+                    viewTimer.Start();
                 }
                 startingTime--;
+                UpdateView();
             }
             else
             {

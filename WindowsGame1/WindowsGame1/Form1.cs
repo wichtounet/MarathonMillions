@@ -21,6 +21,8 @@ namespace Marathon
             AutoScaleDimensions = new SizeF(6F, 13F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1000, 400);
+            
+
             Name = "Marathon des millions";
 
             //.---
