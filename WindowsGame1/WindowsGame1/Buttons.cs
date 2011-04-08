@@ -14,17 +14,21 @@ namespace Marathon
     {
         private enum State
         {
+            Starting, 
             Started,
             Finished
         }
 
         private readonly Timer timer;
+        private readonly Timer starTimer;
 
-        private State state = State.Started;
+        private State state = State.Starting;
+        private int startTime;
         private bool ok;
 
         private SpriteBatch spriteBatch;
         private SpriteFont font;
+        private SpriteFont font2;
         private ContentManager content;
 
         private ButtonState buttonState;
@@ -45,12 +49,16 @@ namespace Marathon
         {
             timer = new Timer {Interval = 5000};
             timer.Tick += TimerClock;
+
+            starTimer = new Timer { Interval = 1000 };
+            starTimer.Tick += StartTimerClock;
         }
 
         protected override void Initialize()
         {
             content = new ContentManager(Services, "Content");
             font = content.Load<SpriteFont>("SpriteFont1");
+            font2 = content.Load<SpriteFont>("SpriteFont2");
 
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -63,16 +71,31 @@ namespace Marathon
             a = true;
             message = "A";
 
-            state = State.Started;
+            state = State.Starting;
 
-            timer.Start();
+            starTimer.Start();
+            startTime = 3;
 
             UpdateView();
         }
 
         public override void Stop()
         {
+            starTimer.Stop();
             timer.Stop();
+        }
+        
+        private void StartTimerClock(object sender, EventArgs e)
+        {
+            startTime--;
+            UpdateView();
+
+            if (startTime == 0)
+            {
+                starTimer.Stop();
+                state = State.Started;
+                timer.Start();
+            }
         }
 
         private void TimerClock(object sender, EventArgs e)
@@ -155,27 +178,38 @@ namespace Marathon
 
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.NonPremultiplied);
 
-            Color textColor;
-            if (a == buttonState.A && b == buttonState.B && one == buttonState.One && two == buttonState.Two
-                && up == buttonState.Up && down == buttonState.Down && right == buttonState.Right && left == buttonState.Left)
+            if(state == State.Starting)
             {
-                textColor = Color.Blue;
-            }
+                spriteBatch.DrawString(font2, "Move quickly wiimote", new Vector2(10, 10), Color.Black);
+                spriteBatch.DrawString(font2, "up down", new Vector2(10, 50), Color.Black);
+
+                string sTime = "" + (3 - startTime / 10);
+                spriteBatch.DrawString(font, sTime, new Vector2(Width / 2, Height / 2) - (font.MeasureString(sTime) / 2), Color.Black);
+            } 
             else
             {
-                textColor = Color.Red;
+                Color textColor;
+                if (a == buttonState.A && b == buttonState.B && one == buttonState.One && two == buttonState.Two
+                    && up == buttonState.Up && down == buttonState.Down && right == buttonState.Right && left == buttonState.Left)
+                {
+                    textColor = Color.Blue;
+                }
+                else
+                {
+                    textColor = Color.Red;
+                }
+
+                switch (state)
+                {
+                    case State.Started:
+                        spriteBatch.DrawString(font, message, new Vector2(Width / 2, Height / 2) - (font.MeasureString(message) / 2), textColor);
+                        break;
+                    case State.Finished:
+                        spriteBatch.DrawString(font, ok ? "Congratulations" : "Game Over", new Vector2(Width / 2, Height / 2) - (font.MeasureString(ok ? "Congratulations" : "Game Over") / 2), Color.Black);
+                        break;
+                }
             }
             
-            switch (state)
-            {
-                case State.Started:
-                    spriteBatch.DrawString(font, message, new Vector2(Width / 2, Height / 2) - (font.MeasureString(message) / 2), textColor);
-                    break;
-                case State.Finished:
-                    spriteBatch.DrawString(font, ok ? "Congratulations" : "Game Over", new Vector2(Width / 2, Height / 2) - (font.MeasureString(ok ? "Congratulations" : "Game Over") / 2), Color.Black);
-                    break;
-            }
-
             spriteBatch.End();
         }
 

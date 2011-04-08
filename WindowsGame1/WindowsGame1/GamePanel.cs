@@ -58,7 +58,7 @@ namespace Marathon
 
             current = random.Next(games.Length);
 
-            current = 2;
+            current = 3;
             
             Controls.Add(games[current]);
 
@@ -165,6 +165,11 @@ namespace Marathon
             {
                 bigGame.AudioLevelUpdated(e);
             }
+        }
+
+        public void DisableRumble()
+        {
+            wm.SetRumble(false);
         }
     }
 }
