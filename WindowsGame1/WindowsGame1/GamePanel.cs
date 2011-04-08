@@ -166,5 +166,10 @@ namespace Marathon
                 bigGame.AudioLevelUpdated(e);
             }
         }
+
+        public void DisableRumble()
+        {
+            wm.SetRumble(false);
+        }
     }
 }
