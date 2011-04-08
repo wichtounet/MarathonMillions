@@ -13,12 +13,14 @@ namespace Marathon
 
         private SpriteBatch spriteBatch;
         private SpriteFont font;
+        private SpriteFont font2;
         private ContentManager content;
 
         private Texture2D startSprite;
         private Texture2D endSprite;
         private Texture2D ballSprite;
         private Texture2D wallSprite;
+        private Texture2D groundSprite;
         private Texture2D simpleTexture;
 
         private float x, y;
@@ -61,48 +63,48 @@ namespace Marathon
                 {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Wall , S.Wall , S.End  ,S.End  , S.End  }
             }, 
             {                                                                                     //10
-                {S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty,S.Empty, S.Empty},
-                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty,S.Empty, S.Empty},
-                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty,S.Empty, S.Empty},
-                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Empty,S.Empty, S.Empty},
-                {S.Wall , S.Wall , S.Wall , S.Empty, S.Empty, S.End  , S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty,S.Empty, S.Empty},
-                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty,S.Empty, S.Empty},
-                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall ,S.Wall , S.Wall },
-                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty,S.Empty, S.Empty},
-                {S.Empty, S.Empty, S.Empty, S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty,S.Empty, S.Empty},
-       /*10*/   {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty,S.Empty, S.Empty},
-                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty,S.Empty, S.Empty},
-                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty,S.Empty, S.Empty},
-                {S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Empty, S.Empty, S.Empty, S.Wall , S.Wall , S.Empty, S.Empty, S.Empty, S.Wall , S.Empty,S.Empty, S.Empty},
-                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty,S.Empty, S.Empty},
-                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty,S.Empty, S.Empty},
-                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty,S.Empty, S.Empty},
-                {S.Wall , S.Wall , S.Empty, S.Empty, S.Empty, S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty,S.Empty, S.Empty},
+                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.End  ,S.End  , S.End  },
+                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.End  ,S.End  , S.End  },
                 {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty,S.Empty, S.Empty},
-                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty,S.Start, S.Empty},
-                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Wall , S.Wall , S.Wall , S.Empty,S.Empty, S.Empty}
+                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty,S.Empty, S.Empty},
+                {S.Empty, S.Empty, S.Empty, S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty,S.Empty, S.Empty},
+                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty,S.Empty, S.Empty},
+                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty,S.Empty, S.Empty},
+                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty,S.Empty, S.Empty},
+                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty,S.Empty, S.Empty},
+                {S.Wall , S.Wall , S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty,S.Empty, S.Empty},
+                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty,S.Empty, S.Empty},
+                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty,S.Empty, S.Empty},
+                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall ,S.Wall , S.Wall },
+                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty,S.Empty, S.Empty},
+                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty,S.Empty, S.Empty},
+                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty,S.Empty, S.Empty},
+                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty,S.Start, S.Empty},
+                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty,S.Empty, S.Empty},
+                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty,S.Empty, S.Empty},
+                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty,S.Empty, S.Empty}
             },
             {                                                                                     //10
-                {S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty,S.Empty, S.Empty},
-                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty,S.Empty, S.Empty},
-                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty,S.Empty, S.Empty},
-                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Empty,S.Empty, S.Empty},
-                {S.Wall , S.Wall , S.Wall , S.Empty, S.Empty, S.End  , S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty,S.Empty, S.Empty},
-                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty,S.Empty, S.Empty},
-                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall ,S.Wall , S.Wall },
-                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty,S.Empty, S.Empty},
-                {S.Empty, S.Empty, S.Empty, S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty,S.Empty, S.Empty},
-       /*10*/   {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty,S.Empty, S.Empty},
+                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Wall , S.Empty,S.Empty, S.Empty},
+                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Wall , S.Empty,S.Start, S.Empty},
+                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Wall , S.Empty,S.Empty, S.Empty},
+                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Wall , S.Empty,S.Empty, S.Empty},
+                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Wall , S.Empty,S.Empty, S.Empty},
+                {S.Empty, S.Empty, S.Empty, S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Empty, S.Empty, S.Empty, S.Wall , S.Wall , S.Empty,S.Empty, S.Empty},
+                {S.Empty, S.Empty, S.Empty, S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Empty, S.Empty, S.Empty, S.Wall , S.Wall , S.Empty,S.Empty, S.Empty},
+                {S.Empty, S.Empty, S.Empty, S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Empty, S.Empty, S.Empty, S.Wall , S.Wall , S.Empty,S.Empty, S.Empty},
+                {S.Empty, S.Empty, S.Empty, S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Empty, S.Empty, S.Empty, S.Wall , S.Wall , S.Empty,S.Empty, S.Empty},
+                {S.Empty, S.Empty, S.Empty, S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Empty, S.Empty, S.Empty, S.Wall , S.Wall , S.Empty,S.Empty, S.Empty},
+                {S.Empty, S.Empty, S.Empty, S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Empty, S.Empty, S.Empty, S.Wall , S.Wall , S.Empty,S.Empty, S.Empty},
+                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Wall , S.Wall , S.Empty,S.Empty, S.Empty},
+                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Wall , S.Wall , S.Empty,S.Empty, S.Empty},
+                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Wall , S.Wall , S.Empty,S.Empty, S.Empty},
+                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Wall , S.Wall , S.Empty,S.Empty, S.Empty},
                 {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty,S.Empty, S.Empty},
-                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty,S.Empty, S.Empty},
-                {S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Empty, S.Empty, S.Empty, S.Wall , S.Wall , S.Empty, S.Empty, S.Empty, S.Wall , S.Empty,S.Empty, S.Empty},
-                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty,S.Empty, S.Empty},
-                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty,S.Empty, S.Empty},
-                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty,S.Empty, S.Empty},
-                {S.Wall , S.Wall , S.Empty, S.Empty, S.Empty, S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty,S.Empty, S.Empty},
-                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty,S.Empty, S.Empty},
-                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty,S.Start, S.Empty},
-                {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Wall , S.Wall , S.Wall , S.Empty,S.Empty, S.Empty}
+                {S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty,S.Empty, S.Empty},
+                {S.End  , S.End  , S.End  , S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty,S.Empty, S.Empty},
+                {S.End  , S.End  , S.End  , S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty,S.Empty, S.Empty},
+                {S.End  , S.End  , S.End  , S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty,S.Empty, S.Empty}
             }
         };
 
@@ -134,6 +136,7 @@ namespace Marathon
         {
             content = new ContentManager(Services, "Content");
             font = content.Load<SpriteFont>("SpriteFont1");
+            font2 = content.Load<SpriteFont>("SpriteFont2");
 
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -177,18 +180,22 @@ namespace Marathon
 
             string text;
 
-            spriteBatch.DrawString(font, "Move Bryan until the finish rectangle without touching the walls", new Vector2(0,0), Color.Black);
-
             switch (state)
             {
                 case -3:
                     spriteBatch.DrawString(font, "3", new Vector2(Width / 3, Height / 2 - 50), Color.Black);
+                    spriteBatch.DrawString(font2, "Move Bryan until the finish", new Vector2(0,0), Color.Black);
+                    spriteBatch.DrawString(font2, "without touching the walls", new Vector2(0, 40), Color.Black);
                     break;
                 case -2:
                     spriteBatch.DrawString(font, "2", new Vector2(Width / 3, Height / 2 - 50), Color.Black);
+                    spriteBatch.DrawString(font2, "Move Bryan until the finish", new Vector2(0,0), Color.Black);
+                    spriteBatch.DrawString(font2, "without touching the walls", new Vector2(0, 40), Color.Black);
                     break;
                 case -1:
                     spriteBatch.DrawString(font, "1", new Vector2(Width / 3, Height / 2 - 50), Color.Black);
+                    spriteBatch.DrawString(font2, "Move Bryan until the finish", new Vector2(0,0), Color.Black);
+                    spriteBatch.DrawString(font2, "without touching the walls", new Vector2(0, 40), Color.Black);
                     break;  
                 case 0:
                     spriteBatch.Draw(endSprite, new Rectangle((int)x, (int)y, 4, 4), Color.Black);
@@ -215,7 +222,6 @@ namespace Marathon
                         switch (matrice[currentMatrice, i, j])
                         {
                             case S.Empty:
-
                                 break;
                             case S.Wall:
                                 spriteBatch.Draw(wallSprite, new Rectangle(xPos, yPos, width, height), Color.White);
@@ -229,7 +235,7 @@ namespace Marathon
                                     case 1:
                                         spriteBatch.Draw(startSprite, new Rectangle((int)x, (int)y, width, height), Color.White);
                                         break;
-                                }
+                                 }
                                 break;
                             case S.End:
                                 spriteBatch.Draw(endSprite, new Rectangle(xPos, yPos, width, height), Color.White);
