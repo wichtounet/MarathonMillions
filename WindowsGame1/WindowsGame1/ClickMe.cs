@@ -21,7 +21,17 @@ namespace Marathon
 
         private int time;
         private int win;
-        private bool won;
+
+        private int startingTime = 3;
+        private State state = State.Starting;
+        private enum State
+        {
+            Starting,
+            Started,
+            Won,
+            Lost
+        }
+        
 
         SpriteBatch spriteBatch;
         Texture2D marmotteSprite;
@@ -77,7 +87,7 @@ namespace Marathon
             }
             else
             {
-                if (won)
+                if (state == State.Won)
                 {
                     string text = "GAME WON!";
                     spriteBatch.DrawString(font, text, new Vector2(Width / 2, Height / 2) - (font.MeasureString(text) / 2), Color.Black);
@@ -104,15 +114,12 @@ namespace Marathon
             time = 20;
             win = 0;
 
-            won = false;
-
             x = 0;
             y = 0;
 
             recPos = new System.Drawing.PointF(50, 50);
 
             timer.Start();
-            viewTimer.Start();
         }
 
         public override void Stop()
@@ -123,29 +130,44 @@ namespace Marathon
 
         private void TimerClock(object obj, EventArgs ea)
         {
-            if (time == 0)
+            viewTimer.Start();
+
+            if (state == State.Starting)
             {
-                won = false;
-                timer.Stop();
-                viewTimer.Stop();
-                Invalidate(true);
-                GamePanel.GameEnded(false);
+                if (startingTime == 0)
+                {
+                    state = State.Started;
+                }
+                startingTime--;
+            }
+            else
+            {
+                if (time == 0)
+                {
+                    state = State.Lost;
+                    timer.Stop();
+                    viewTimer.Stop();
+                    Invalidate(true);
+                    GamePanel.GameEnded(false);
+                }
+                if (state == State.Lost)
+                {
+                    timer.Stop();
+                    viewTimer.Stop();
+                    Invalidate(true);
+                    GamePanel.GameEnded(true);
+                }
+
+                if (Wm.WiimoteState.Rumble)
+                {
+                    Wm.SetRumble(false);
+                }
+
+                time--;
             }
 
-            if(won)
-            {
-                timer.Stop();
-                viewTimer.Stop();
-                Invalidate(true);
-                GamePanel.GameEnded(true);
-            }
-
-            if (Wm.WiimoteState.Rumble)
-            {
-                Wm.SetRumble(false);
-            }
-
-            time--;
+            
+            
         }
 
         internal override void WiimoteChanged(WiimoteState ws)
@@ -161,7 +183,7 @@ namespace Marathon
 
                     if (win == 10)
                     {
-                        won = true;
+                        state = State.Won;
                     }
                     else
                     {
