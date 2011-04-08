@@ -73,7 +73,7 @@ namespace Marathon
        /*10*/   {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty,S.Empty, S.Empty},
                 {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty,S.Empty, S.Empty},
                 {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty,S.Empty, S.Empty},
-                {S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Empty, S.Empty, S.Empty, S.Wall , S.Wall , S.Wall , S.Empty, S.Empty, S.Wall , S.Empty,S.Empty, S.Empty},
+                {S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Empty, S.Empty, S.Empty, S.Wall , S.Wall , S.Empty, S.Empty, S.Empty, S.Wall , S.Empty,S.Empty, S.Empty},
                 {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty,S.Empty, S.Empty},
                 {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty,S.Empty, S.Empty},
                 {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty,S.Empty, S.Empty},
@@ -95,7 +95,7 @@ namespace Marathon
        /*10*/   {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty,S.Empty, S.Empty},
                 {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty,S.Empty, S.Empty},
                 {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty,S.Empty, S.Empty},
-                {S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Empty, S.Empty, S.Empty, S.Wall , S.Wall , S.Wall , S.Empty, S.Empty, S.Wall , S.Empty,S.Empty, S.Empty},
+                {S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Wall , S.Empty, S.Empty, S.Empty, S.Wall , S.Wall , S.Empty, S.Empty, S.Empty, S.Wall , S.Empty,S.Empty, S.Empty},
                 {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty,S.Empty, S.Empty},
                 {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty,S.Empty, S.Empty},
                 {S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty, S.Empty, S.Empty, S.Empty, S.Wall , S.Empty,S.Empty, S.Empty},
@@ -113,18 +113,19 @@ namespace Marathon
         }
         private void TimerClock(object sender, EventArgs e)
         {
-            if (timerStep++ >= 100)
+            if (timerStep == 100)
             {
                 state = -2;
             }
-            else if (timerStep >= 200)
+            else if (timerStep == 200)
             {
                 state = -1;
             }
-            else if (timerStep >= 300)
+            else if (timerStep == 300)
             {
                 state = 0;
             }
+            timerStep++;
             if (Width > 0)
                 CheckMatrice();
             UpdateView();
@@ -175,6 +176,9 @@ namespace Marathon
             var height = Height / labyrinthSize;
 
             string text;
+
+            spriteBatch.DrawString(font, "Move Bryan until the finish rectangle without touching the walls", new Vector2(0,0), Color.Black);
+
             switch (state)
             {
                 case -3:
@@ -199,7 +203,7 @@ namespace Marathon
                     break;
             }
 
-            if (state != 2 && state != 3)
+            if (state == 0 || state == 1)
             {
                 for (var i = 0; i < labyrinthSize; i++)
                 {
