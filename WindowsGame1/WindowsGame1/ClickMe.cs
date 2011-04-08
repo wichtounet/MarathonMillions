@@ -87,7 +87,7 @@ namespace Marathon
                 if (startingTime == 0) sTmp = "GO";
                 spriteBatch.DrawString(font, sTmp, new Vector2(Width / 2, Height / 2) - (font.MeasureString(sTmp) / 2), Color.Black);
 
-                sTmp = "Catch 10 marmot by shooting\nthem with the B button";
+                sTmp = "Catch 10 marmots by shooting\nthem with the B button";
                 spriteBatch.DrawString(font2, sTmp, new Vector2(Width / 2 - (font2.MeasureString(sTmp) / 2).X, 10), Color.Black);
             }
             else
