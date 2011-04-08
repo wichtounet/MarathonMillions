@@ -24,8 +24,6 @@ namespace Marathon
             WindowState = FormWindowState.Maximized;
             Name = "Marathon des millions";
 
-            //.---
-
             // Rajout des choix à la grammaire du prog
             var grammar = new GrammarBuilder();
             grammar.Append(new Choices("1", "2", "3", "4", "Yes", "No"));
@@ -36,12 +34,7 @@ namespace Marathon
             recognizer.LoadGrammar(new Grammar(grammar));
             recognizer.SpeechRecognized += SpeechRecognized;
             recognizer.AudioLevelUpdated += AudioLevelUpdated;
-            //recognizer.SpeechHypothesized += SpeechHypothesized;
-            //recognizer.SpeechDetected += SpeechDetected;
-            //recognizer.SpeechRecognitionRejected += SpeechRecognitionRejected;
             recognizer.RecognizeAsync(RecognizeMode.Multiple);
-
-            //.---
 
             // create a new instance of the Wiimote
             wm = new Wiimote();
@@ -69,22 +62,6 @@ namespace Marathon
             Controls.Add(gamePanel);
 
             questionPanel.Start();
-        }
-
-        private void SpeechDetected(object sender, SpeechDetectedEventArgs e)
-        {
-            Console.WriteLine("Detected " + e.AudioPosition);
-        }
-
-        private void SpeechRecognitionRejected(object sender, SpeechRecognitionRejectedEventArgs e)
-        {
-            Console.WriteLine("Rejected : " + e.Result.Audio);
-            Console.WriteLine("Rejected : " + e.Result.Text);
-        }
-
-        private void SpeechHypothesized(object sender, SpeechHypothesizedEventArgs e)
-        {
-            Console.WriteLine("Hypothesized : " + e.Result.Text);
         }
 
         private void SpeechRecognized(object sender, SpeechRecognizedEventArgs e)

@@ -161,6 +161,8 @@ namespace Marathon
                     {
                         synthesizer.SpeakAsync("Game over !");
 
+                        gamePanel.DisableRumble();
+
                         state = State.Fail;
 
                         gamePanel.TerminateGame();
@@ -206,21 +208,21 @@ namespace Marathon
 
             if (state == State.Fail)
             {
-                g.DrawString("Game over", new Font("Verdana", 32), new SolidBrush(Color.Black), 5, 5);
+                g.DrawString("Game over", new Font("Verdana", 36), new SolidBrush(Color.Black), 5, 5);
 
                 return;
             }
 
             if (state == State.Win)
             {
-                g.DrawString("Congratulations", new Font("Verdana", 32), new SolidBrush(Color.Black), 5, 5);
+                g.DrawString("Congratulations", new Font("Verdana", 36), new SolidBrush(Color.Black), 5, 5);
 
                 return;
             }
 
             if (state == State.BigGame)
             {
-                g.DrawString("Play the right game", new Font("Verdana", 32), new SolidBrush(Color.Black), 5, 5);
+                g.DrawString("Play the right game", new Font("Verdana", 36), new SolidBrush(Color.Black), 5, 5);
 
                 return;
             }
@@ -234,12 +236,12 @@ namespace Marathon
 
             g.DrawString(title, new Font("Verdana", 16), new SolidBrush(Color.Black), 5, 5);
 
-            g.DrawString("1. " + answer1, new Font("Verdana", 15), new SolidBrush(userAnswer == 1 ? Color.Red : Color.Black), 20, 50);
-            g.DrawString("2. " + answer2, new Font("Verdana", 15), new SolidBrush(userAnswer == 2 ? Color.Red : Color.Black), 20, 90);
-            g.DrawString("3. " + answer3, new Font("Verdana", 15), new SolidBrush(userAnswer == 3 ? Color.Red : Color.Black), 20, 130);
-            g.DrawString("4. " + answer4, new Font("Verdana", 15), new SolidBrush(userAnswer == 4 ? Color.Red : Color.Black), 20, 170);
+            g.DrawString("1. " + answer1, new Font("Verdana", 20), new SolidBrush(userAnswer == 1 ? Color.Red : Color.Black), 20, 50);
+            g.DrawString("2. " + answer2, new Font("Verdana", 20), new SolidBrush(userAnswer == 2 ? Color.Red : Color.Black), 20, 90);
+            g.DrawString("3. " + answer3, new Font("Verdana", 20), new SolidBrush(userAnswer == 3 ? Color.Red : Color.Black), 20, 130);
+            g.DrawString("4. " + answer4, new Font("Verdana", 20), new SolidBrush(userAnswer == 4 ? Color.Red : Color.Black), 20, 170);
 
-            g.DrawString("" + countDown, new Font("Verdana", 20), new SolidBrush(Color.Red), 100, 250);
+            g.DrawString("" + countDown, new Font("Verdana", 25), new SolidBrush(Color.Red), 100, 250);
         }
 
         internal void SpeechRecognized(object sender, SpeechRecognizedEventArgs e)

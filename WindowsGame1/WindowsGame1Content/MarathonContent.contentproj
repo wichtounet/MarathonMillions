@@ -90,11 +90,6 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="green_grass.jpg">
-      <Name>green_grass</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
     <Compile Include="redCar.png">
       <Name>redCar</Name>
       <Importer>TextureImporter</Importer>
@@ -102,6 +97,13 @@
     </Compile>
     <Compile Include="road.png">
       <Name>road</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="green_grass.jpg">
+      <Name>green_grass</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
