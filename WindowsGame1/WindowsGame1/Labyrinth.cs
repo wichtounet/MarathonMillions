@@ -28,6 +28,8 @@ namespace Marathon
         private static int nbLabyrinth = 3;
         private static int labyrinthSize = 20;
 
+        private int timerStep = 0;
+
         private Random rand = new Random();
 
         enum S
@@ -110,7 +112,19 @@ namespace Marathon
             timer.Tick += TimerClock;
         }
         private void TimerClock(object sender, EventArgs e)
-        {            
+        {
+            if (timerStep++ >= 100)
+            {
+                state = -2;
+            }
+            else if (timerStep >= 200)
+            {
+                state = -1;
+            }
+            else if (timerStep >= 300)
+            {
+                state = 0;
+            }
             if (Width > 0)
                 CheckMatrice();
             UpdateView();
@@ -138,9 +152,10 @@ namespace Marathon
             x = 0;
             y = 0;
             fps = 0;
-            state = 0;
+            state = -3;
 
-            currentMatrice = 0;//rand.Next(nbLabyrinth);
+            currentMatrice = rand.Next(nbLabyrinth);
+            timerStep = 0;
             UpdateView();
             timer.Start();
         }
@@ -155,6 +170,15 @@ namespace Marathon
 
             switch (state)
             {
+                case -3:
+                    spriteBatch.DrawString(font, "3", new Vector2(Width / 3, Height / 2 - 50), Color.Black);
+                    break;
+                case -2:
+                    spriteBatch.DrawString(font, "2", new Vector2(Width / 3, Height / 2 - 50), Color.Black);
+                    break;
+                case -1:
+                    spriteBatch.DrawString(font, "1", new Vector2(Width / 3, Height / 2 - 50), Color.Black);
+                    break;  
                 case 0:
                     spriteBatch.Draw(endSprite, new Rectangle((int)x, (int)y, 4, 4), Color.Black);
                     break;
